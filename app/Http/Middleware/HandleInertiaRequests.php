@@ -48,6 +48,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
+                'recovery_codes' => fn () => $request->session()->get('recovery_codes'),
             ],
             'site' => [
                 'name' => fn () => $this->settings->get('admin', 'site_name', 'Laravel'),

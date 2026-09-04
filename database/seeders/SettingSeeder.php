@@ -35,6 +35,7 @@ class SettingSeeder extends Seeder
             ['key' => 'default_language', 'label' => 'Standart til', 'type' => Setting::TYPE_TEXT, 'value' => 'uz'],
             ['key' => 'session_timeout', 'label' => 'Sessiya muddati (daqiqa)', 'type' => Setting::TYPE_NUMBER, 'value' => '120'],
             ['key' => 'registration_enabled', 'label' => "Ro'yxatdan o'tish ochiqmi", 'type' => Setting::TYPE_BOOLEAN, 'value' => '1'],
+            ['key' => 'email_verification_enabled', 'label' => 'Email tasdiqlash majburiymi', 'type' => Setting::TYPE_BOOLEAN, 'value' => '1'],
             ['key' => 'backup_email', 'label' => 'Zaxira nusxa uchun email', 'type' => Setting::TYPE_EMAIL, 'value' => ''],
         ]);
     }

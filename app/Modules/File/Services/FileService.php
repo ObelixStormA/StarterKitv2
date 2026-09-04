@@ -36,8 +36,31 @@ class FileService
 
     public function delete(File $file): void
     {
-        Storage::disk($file->disk)->delete($file->path);
         $file->delete();
+    }
+
+    public function restore(File $file): void
+    {
+        $file->restore();
+    }
+
+    public function forceDelete(File $file): void
+    {
+        Storage::disk($file->disk)->delete($file->path);
+        $file->forceDelete();
+    }
+
+    public function trashed(array $filters = []): LengthAwarePaginator
+    {
+        return File::onlyTrashed()
+            ->when(
+                $filters['only_user_id'] ?? null,
+                fn ($q, $id) => $q->where('user_id', $id)
+            )
+            ->with('user:id,name')
+            ->latest('deleted_at')
+            ->paginate(24)
+            ->withQueryString();
     }
 
     /**

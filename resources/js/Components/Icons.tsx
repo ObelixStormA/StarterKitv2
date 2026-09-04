@@ -104,6 +104,18 @@ export const ShieldIcon = (props: IconProps) =>
         props,
     );
 
+export const AuditIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M9 3h6a1 1 0 011 1v1H8V4a1 1 0 011-1z" />
+            <rect x="5" y="5" width="14" height="16" rx="2" />
+            <path d="M9 11h6" />
+            <path d="M9 15h6" />
+            <path d="M9 19h3" />
+        </>,
+        props,
+    );
+
 export const FolderIcon = (props: IconProps) =>
     base(
         <path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />,

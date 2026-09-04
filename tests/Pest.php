@@ -16,7 +16,24 @@ use Tests\TestCase;
 
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
+    ->beforeEach(function () {
+        $this->seed(\Database\Seeders\RolePermissionSeeder::class);
+    })
     ->in('Feature');
+
+/*
+|--------------------------------------------------------------------------
+| Global helpers
+|--------------------------------------------------------------------------
+*/
+
+function adminUser(): \App\Models\User
+{
+    $user = \App\Models\User::factory()->create();
+    $user->assignRole('admin');
+
+    return $user;
+}
 
 /*
 |--------------------------------------------------------------------------

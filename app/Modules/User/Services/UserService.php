@@ -3,6 +3,7 @@
 namespace App\Modules\User\Services;
 
 use App\Models\User;
+use App\Notifications\GeneralNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
@@ -37,6 +38,12 @@ class UserService
 
         $user->syncRoles($data['roles'] ?? []);
 
+        $user->notify(new GeneralNotification(
+            title: 'Xush kelibsiz!',
+            message: "Hisobingiz yaratildi. Boshlash uchun profilingizni to'ldiring.",
+            url: route('profile.edit'),
+        ));
+
         return $user;
     }
 
@@ -56,5 +63,29 @@ class UserService
     public function delete(User $user): void
     {
         $user->delete();
+    }
+
+    public function restore(int $id): void
+    {
+        User::onlyTrashed()->findOrFail($id)->restore();
+    }
+
+    public function forceDelete(int $id): void
+    {
+        User::onlyTrashed()->findOrFail($id)->forceDelete();
+    }
+
+    public function trashed(array $filters = []): LengthAwarePaginator
+    {
+        return User::onlyTrashed()
+            ->when(
+                $filters['search'] ?? null,
+                fn ($q, $s) => $q->where(fn ($q) => $q
+                    ->where('name', 'like', "%{$s}%")
+                    ->orWhere('email', 'like', "%{$s}%"))
+            )
+            ->latest('deleted_at')
+            ->paginate(15)
+            ->withQueryString();
     }
 }

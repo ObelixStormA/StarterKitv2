@@ -15,7 +15,7 @@ import { useLocale } from '@/i18n/LocaleProvider';
 import { formatBytes } from '@/lib/format';
 import { confirmDelete } from '@/lib/swal';
 import { FileCategory, FileItem, FileStats, Paginated } from '@/types';
-import { Head, router, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { ComponentType, DragEvent, FormEventHandler, SVGProps, useRef, useState } from 'react';
 
 const CATEGORY_META: Record<FileCategory, { icon: ComponentType<SVGProps<SVGSVGElement>>; bg: string; fg: string; chart: string }> = {
@@ -117,6 +117,14 @@ export default function Index({
                                     className="input-theme w-full"
                                 />
                             </form>
+                            {can('files.delete') && (
+                                <Link
+                                    href={route('files.trashed')}
+                                    className="px-4 py-2.5 rounded-xl text-sm font-semibold text-secondary-500 border border-surface-200 hover:bg-surface-100 whitespace-nowrap"
+                                >
+                                    {t('common.trash')}
+                                </Link>
+                            )}
                             {can('files.create') && (
                                 <button
                                     type="button"

@@ -52,6 +52,15 @@ export default function Index({
                         />
                     </form>
 
+                    {can('users.delete') && (
+                        <Link
+                            href={route('users.trashed')}
+                            className="px-4 py-2.5 rounded-xl text-sm font-semibold text-secondary-500 border border-surface-200 hover:bg-surface-100 whitespace-nowrap"
+                        >
+                            {t('common.trash')}
+                        </Link>
+                    )}
+
                     {can('users.create') && (
                         <Link
                             href={route('users.create')}

@@ -78,6 +78,35 @@ class UserController extends BaseController
 
         $this->service->delete($user);
 
-        return redirect()->route('users.index')->with('success', "O'chirildi");
+        return redirect()->route('users.index')->with('success', "Savatga o'tkazildi");
+    }
+
+    public function trashed(Request $request): Response
+    {
+        abort_unless(auth()->user()->can('users.delete'), 403);
+
+        return Inertia::render('User/Trashed', [
+            'users' => $this->service->trashed($request->only('search')),
+            'filters' => $request->only('search'),
+        ]);
+    }
+
+    public function restore(int $id): RedirectResponse
+    {
+        abort_unless(auth()->user()->can('users.delete'), 403);
+
+        $this->service->restore($id);
+
+        return back()->with('success', 'Foydalanuvchi tiklandi');
+    }
+
+    public function forceDelete(int $id): RedirectResponse
+    {
+        abort_unless(auth()->user()->can('users.delete'), 403);
+        abort_if($id === auth()->id(), 403, "O'zingizni o'chira olmaysiz");
+
+        $this->service->forceDelete($id);
+
+        return back()->with('success', "Butunlay o'chirildi");
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Setting\Models;
 
+use App\Shared\Traits\Auditable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['group', 'key', 'type', 'value', 'label'])]
 class Setting extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     public const GROUP_ADMIN = 'admin';
     public const GROUP_SITE = 'site';

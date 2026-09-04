@@ -1,9 +1,10 @@
 import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
 import { useLocale } from '@/i18n/LocaleProvider';
-import { toastSuccess } from '@/lib/swal';
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler, useRef, useState } from 'react';
+import { confirmDelete, toastSuccess } from '@/lib/swal';
+import { User } from '@/types';
+import { router, useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
 
 export default function SecurityTab() {
     const { t } = useLocale();
@@ -17,21 +18,7 @@ export default function SecurityTab() {
 
             <ChangePasswordSection />
 
-            <div className="pt-6 border-t border-surface-200">
-                <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                        <h3 className="font-semibold text-secondary-900 mb-1">{t('account.two_factor_auth')}</h3>
-                        <p className="text-sm text-secondary-500">{t('account.two_factor_desc')}</p>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={() => toastSuccess(t('account.upload_coming_soon'))}
-                        className="px-4 py-2 rounded-lg font-medium text-sm border border-surface-200 text-secondary-700 hover:bg-surface-100"
-                    >
-                        {t('account.enable')}
-                    </button>
-                </div>
-            </div>
+            <TwoFactorSection />
 
             <div className="pt-6 border-t border-surface-200">
                 <h3 className="font-semibold text-secondary-900 mb-3">{t('account.active_sessions')}</h3>
@@ -45,6 +32,178 @@ export default function SecurityTab() {
             </div>
 
             <DeleteAccountSection />
+        </div>
+    );
+}
+
+function TwoFactorSection() {
+    const { t } = useLocale();
+    const { auth, flash } = usePage().props as unknown as {
+        auth: { user: User & { two_factor_enabled: boolean } };
+        flash: { recovery_codes?: string[] | null };
+    };
+
+    const [enabling, setEnabling] = useState(false);
+    const [qrSvg, setQrSvg] = useState<string | null>(null);
+    const [secret, setSecret] = useState<string | null>(null);
+    const [recoveryCodes, setRecoveryCodes] = useState<string[] | null>(null);
+    const { data, setData, post, processing, errors, reset } = useForm({ code: '' });
+
+    useEffect(() => {
+        if (flash.recovery_codes) {
+            setRecoveryCodes(flash.recovery_codes);
+        }
+    }, [flash.recovery_codes]);
+
+    const startEnabling = () => {
+        setEnabling(true);
+        fetch(route('two-factor.enable'), {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
+            },
+            credentials: 'same-origin',
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                setQrSvg(json.svg);
+                setSecret(json.secret);
+            });
+    };
+
+    const confirm: FormEventHandler = (e) => {
+        e.preventDefault();
+        post(route('two-factor.confirm'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                setEnabling(false);
+                setQrSvg(null);
+                reset();
+            },
+        });
+    };
+
+    const disable = async () => {
+        const confirmed = await confirmDelete({
+            title: t('common.are_you_sure'),
+            text: t('two_factor.disable_confirm'),
+            confirmText: t('common.confirm_delete_button'),
+            cancelText: t('common.cancel'),
+        });
+
+        if (confirmed) {
+            router.delete(route('two-factor.disable'), {
+                preserveScroll: true,
+                onSuccess: () => toastSuccess(t('two_factor.disabled')),
+            });
+        }
+    };
+
+    return (
+        <div className="pt-6 border-t border-surface-200">
+            <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                    <h3 className="font-semibold text-secondary-900 mb-1 flex items-center gap-2">
+                        {t('account.two_factor_auth')}
+                        {auth.user.two_factor_enabled && (
+                            <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
+                                {t('two_factor.enabled_badge')}
+                            </span>
+                        )}
+                    </h3>
+                    <p className="text-sm text-secondary-500">{t('account.two_factor_desc')}</p>
+                </div>
+
+                {auth.user.two_factor_enabled ? (
+                    <button
+                        type="button"
+                        onClick={disable}
+                        className="px-4 py-2 rounded-lg font-medium text-sm border border-red-200 text-red-600 hover:bg-red-50"
+                    >
+                        {t('two_factor.disable')}
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={startEnabling}
+                        className="px-4 py-2 rounded-lg font-medium text-sm border border-surface-200 text-secondary-700 hover:bg-surface-100"
+                    >
+                        {t('account.enable')}
+                    </button>
+                )}
+            </div>
+
+            <Modal show={enabling} onClose={() => setEnabling(false)}>
+                <form onSubmit={confirm} className="p-6">
+                    <h2 className="text-lg font-bold text-secondary-900 mb-4">{t('two_factor.setup_title')}</h2>
+
+                    {qrSvg ? (
+                        <>
+                            <p className="text-sm text-secondary-500 mb-4">{t('two_factor.scan_hint')}</p>
+                            <div
+                                className="flex justify-center mb-4 [&_svg]:w-48 [&_svg]:h-48"
+                                dangerouslySetInnerHTML={{ __html: qrSvg }}
+                            />
+                            {secret && (
+                                <p className="text-center text-xs text-secondary-500 mb-4">
+                                    {t('two_factor.manual_key')}: <code className="font-mono">{secret}</code>
+                                </p>
+                            )}
+
+                            <label className="block text-sm font-semibold text-secondary-900 mb-2">
+                                {t('two_factor.code_label')}
+                            </label>
+                            <input
+                                type="text"
+                                inputMode="numeric"
+                                autoFocus
+                                value={data.code}
+                                onChange={(e) => setData('code', e.target.value)}
+                                placeholder="123456"
+                                className="input-theme w-full text-center text-lg tracking-[0.5em]"
+                            />
+                            <InputError message={errors.code} className="mt-2" />
+
+                            <div className="mt-6 flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setEnabling(false)}
+                                    className="px-4 py-2.5 rounded-xl text-sm font-semibold text-secondary-500 hover:bg-surface-100"
+                                >
+                                    {t('common.cancel')}
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="px-4 py-2.5 btn-theme-primary font-semibold rounded-xl text-sm"
+                                >
+                                    {t('two_factor.verify')}
+                                </button>
+                            </div>
+                        </>
+                    ) : (
+                        <p className="text-sm text-secondary-500">{t('files.uploading')}</p>
+                    )}
+                </form>
+            </Modal>
+
+            <Modal show={!!recoveryCodes} onClose={() => setRecoveryCodes(null)}>
+                <div className="p-6">
+                    <h2 className="text-lg font-bold text-secondary-900 mb-2">{t('two_factor.recovery_codes_title')}</h2>
+                    <p className="text-sm text-secondary-500 mb-4">{t('two_factor.recovery_codes_desc')}</p>
+                    <div className="grid grid-cols-2 gap-2 bg-surface-50 rounded-xl p-4 font-mono text-sm">
+                        {recoveryCodes?.map((code) => <div key={code}>{code}</div>)}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setRecoveryCodes(null)}
+                        className="mt-6 w-full px-4 py-2.5 btn-theme-primary font-semibold rounded-xl text-sm"
+                    >
+                        {t('two_factor.recovery_codes_saved')}
+                    </button>
+                </div>
+            </Modal>
         </div>
     );
 }

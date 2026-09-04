@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import en from './locales/en';
 import ru from './locales/ru';
 import uz from './locales/uz';
@@ -33,8 +33,19 @@ function getInitialLocale(): Locale {
     return 'uz';
 }
 
+function syncLocaleCookie(locale: Locale) {
+    try {
+        document.cookie = `${STORAGE_KEY}=${locale};path=/;max-age=31536000;samesite=lax`;
+    } catch {
+        // ignore (SSR or cookies disabled)
+    }
+}
+
 export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setLocaleState] = useState<Locale>(getInitialLocale);
+
+    // Keep the backend's validation-message locale in sync with the client on first load too.
+    useEffect(() => syncLocaleCookie(locale), []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setLocale = useCallback((next: Locale) => {
         setLocaleState(next);
@@ -43,6 +54,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
         } catch {
             // ignore write failures (private mode etc.)
         }
+        syncLocaleCookie(next);
         document.documentElement.lang = next;
     }, []);
 

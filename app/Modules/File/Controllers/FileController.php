@@ -64,7 +64,43 @@ class FileController extends BaseController
 
         $this->service->delete($file);
 
-        return back()->with('success', "Fayl o'chirildi");
+        return back()->with('success', "Fayl savatga o'tkazildi");
+    }
+
+    public function trashed(Request $request): Response
+    {
+        abort_unless(auth()->user()->can('files.delete'), 403);
+
+        $filters = [];
+        if (! $request->user()->can('files.view')) {
+            $filters['only_user_id'] = $request->user()->id;
+        }
+
+        return Inertia::render('File/Trashed', [
+            'files' => $this->service->trashed($filters),
+        ]);
+    }
+
+    public function restore(int $id): RedirectResponse
+    {
+        abort_unless(auth()->user()->can('files.delete'), 403);
+
+        $file = File::onlyTrashed()->findOrFail($id);
+        $this->authorizeAccess($file);
+        $this->service->restore($file);
+
+        return back()->with('success', 'Fayl tiklandi');
+    }
+
+    public function forceDelete(int $id): RedirectResponse
+    {
+        abort_unless(auth()->user()->can('files.delete'), 403);
+
+        $file = File::onlyTrashed()->findOrFail($id);
+        $this->authorizeAccess($file);
+        $this->service->forceDelete($file);
+
+        return back()->with('success', "Fayl butunlay o'chirildi");
     }
 
     protected function authorizeAccess(File $file): void

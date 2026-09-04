@@ -24,6 +24,18 @@ export interface FileStats {
     diskFreeBytes: number | null;
 }
 
+export interface AuditLog {
+    id: number;
+    action: 'created' | 'updated' | 'deleted' | 'restored';
+    auditable_type: string;
+    auditable_id: number;
+    auditable_label: string | null;
+    changes: Record<string, unknown> | null;
+    ip_address: string | null;
+    created_at: string;
+    user: { id: number; name: string } | null;
+}
+
 export interface FileItem {
     id: number;
     user_id: number;

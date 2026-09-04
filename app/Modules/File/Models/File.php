@@ -3,16 +3,19 @@
 namespace App\Modules\File\Models;
 
 use App\Models\User;
+use App\Shared\Traits\Auditable;
+use Database\Factories\FileFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['user_id', 'name', 'path', 'disk', 'mime_type', 'extension', 'size'])]
 class File extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, Auditable;
 
     public const CATEGORY_IMAGE = 'image';
     public const CATEGORY_VIDEO = 'video';
@@ -30,6 +33,7 @@ class File extends Model
     {
         return [
             'size' => 'integer',
+            'deleted_at' => 'datetime',
         ];
     }
 
@@ -95,5 +99,10 @@ class File extends Model
     public function isImage(): bool
     {
         return str_starts_with((string) $this->mime_type, 'image/');
+    }
+
+    protected static function newFactory(): FileFactory
+    {
+        return FileFactory::new();
     }
 }
