@@ -1,0 +1,183 @@
+/* ========================================
+   Adminex - Animation Styles
+   Keyframes and animation utilities
+   ======================================== */
+
+@layer utilities {
+  /* --------------------------------
+     Fade In
+     -------------------------------- */
+  
+  .animate-fade-in {
+    animation: fade-in var(--duration-normal) ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --------------------------------
+     Slide In Left
+     -------------------------------- */
+  
+  .animate-slide-in-left {
+    animation: slide-in-left var(--duration-slow) ease-out;
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* --------------------------------
+     Slide In Right
+     -------------------------------- */
+  
+  .animate-slide-in-right {
+    animation: slide-in-right var(--duration-slow) ease-out;
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* --------------------------------
+     Slide In Up
+     -------------------------------- */
+  
+  .animate-slide-in-up {
+    animation: slide-in-up var(--duration-slow) ease-out;
+  }
+
+  @keyframes slide-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --------------------------------
+     Scale In
+     -------------------------------- */
+  
+  .animate-scale-in {
+    animation: scale-in var(--duration-normal) ease-out;
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* --------------------------------
+     Pulse Dot
+     -------------------------------- */
+  
+  .animate-pulse-dot {
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+  }
+
+  /* --------------------------------
+     Spin
+     -------------------------------- */
+  
+  .animate-spin-slow {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* --------------------------------
+     Bounce
+     -------------------------------- */
+  
+  .animate-bounce-in {
+    animation: bounce-in var(--duration-slow) ease-out;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* --------------------------------
+     Hero glow (landing background)
+     -------------------------------- */
+
+  .animate-hero-glow {
+    animation: hero-glow 5s ease-in-out infinite;
+  }
+
+  @keyframes hero-glow {
+    0%, 100% {
+      opacity: 0.45;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.75;
+      transform: scale(1.06);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-hero-glow {
+      animation: none;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+/* ========================================
+   Adminex - Main Stylesheet
+   Entry point that imports all style modules
+   ======================================== */
+
+@import "tailwindcss";
+
+/* Configure dark mode to use class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Theme variables and design tokens */
+@import "./styles/variables.css";
+
+/* Typography and fonts */
+@import "./styles/fonts.css";
+
+/* Base styles and resets */
+@import "./styles/base.css";
+
+/* Layout configurations */
+@import "./styles/layout.css";
+
+/* Component utilities */
+@import "./styles/components.css";
+
+/* Animations */
+@import "./styles/animations.css";

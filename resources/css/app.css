@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   Adminex theme tokens (docs/template dan)
+   ======================================== */
+:root {
+    --theme-primary: 59 130 246;
+    --theme-accent: 99 102 241;
+
+    --color-secondary-400: #7d8e9f;
+    --color-secondary-500: #5d7287;
+    --color-secondary-900: #1d354f;
+
+    --color-surface-50: #fafafa;
+    --color-surface-100: #f4f4f5;
+    --color-surface-200: #e4e4e7;
+    --color-surface-300: #d4d4d8;
+
+    --radius: 0.625rem;
+}
+
+@layer utilities {
+    .heading-2 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: 700;
+    }
+
+    .text-body-sm {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    .input-theme {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--color-surface-300);
+        background-color: white;
+        color: var(--color-secondary-900);
+        transition: all 0.2s ease;
+    }
+
+    .input-theme::placeholder {
+        color: var(--color-secondary-400);
+    }
+
+    .input-theme:focus {
+        outline: none;
+        border-color: rgb(var(--theme-primary));
+        box-shadow: 0 0 0 3px rgb(var(--theme-primary) / 0.15);
+    }
+
+    .checkbox-theme {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 0.25rem;
+        border: 1px solid var(--color-surface-300);
+        accent-color: rgb(var(--theme-primary));
+    }
+
+    .checkbox-theme:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgb(var(--theme-primary) / 0.15);
+    }
+
+    .btn-theme-primary {
+        background-color: rgb(var(--theme-primary));
+        color: white;
+        transition: all 0.2s ease;
+    }
+
+    .btn-theme-primary:hover {
+        filter: brightness(0.9);
+        box-shadow: 0 4px 15px rgb(var(--theme-primary) / 0.4);
+    }
+
+    .btn-theme-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .text-theme-primary {
+        color: rgb(var(--theme-primary));
+    }
+
+    .bg-surface-50 {
+        background-color: var(--color-surface-50);
+    }
+
+    .bg-surface-100 {
+        background-color: var(--color-surface-100);
+    }
+
+    .bg-surface-200 {
+        background-color: var(--color-surface-200);
+    }
+
+    .border-surface-200 {
+        border-color: var(--color-surface-200);
+    }
+
+    .text-secondary-500 {
+        color: var(--color-secondary-500);
+    }
+
+    .text-secondary-900 {
+        color: var(--color-secondary-900);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.4s ease-out;
+}

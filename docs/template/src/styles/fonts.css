@@ -1,0 +1,361 @@
+/* ========================================
+   Adminex - Typography & Fonts
+   Font-face declarations and typography settings
+   ======================================== */
+
+/*
+ * Primary Font: DM Sans
+ * A modern, clean sans-serif from Google Fonts
+ * Weights: 400 (Regular), 500 (Medium), 600 (SemiBold), 700 (Bold), 800 (ExtraBold)
+ * Supports: Latin, Latin Extended
+ */
+
+/* Preconnect hints are in index.html for performance */
+
+/* Font Family Definitions */
+@layer base {
+  :root {
+    /* Primary font for UI */
+    --font-sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    /* Monospace for code */
+    --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+
+    /* Display font for headings (using same family with different weight) */
+    --font-display: "DM Sans", var(--font-sans);
+
+    /* -------------------------------------------------
+       Typography Tokens (Phase 1)
+       These power semantic utility classes used across the app.
+       ------------------------------------------------- */
+    --text-display-lg: 5rem; /* 80px */
+    --text-display-md: 3.75rem; /* 60px */
+    --text-display-sm: 3rem; /* 48px */
+
+    --text-h1: 2.25rem; /* 36px */
+    --text-h2: 1.875rem; /* 30px */
+    --text-h3: 1.5rem; /* 24px */
+    --text-h4: 1.25rem; /* 20px */
+    --text-h5: 1.125rem; /* 18px */
+    --text-h6: 1rem; /* 16px */
+
+    --text-body: 1rem; /* 16px */
+    --text-body-sm: 0.875rem; /* 14px */
+    --text-caption: 0.75rem; /* 12px */
+    --text-badge: 0.75rem; /* 12px */
+
+    /* UI micro-sizes (replaces text-[Npx] usage in TSX) */
+    --text-ui: 0.9375rem; /* 15px */
+    --text-ui-sm: 0.8125rem; /* 13px */
+    --text-ui-xs: 0.6875rem; /* 11px */
+    --text-ui-2xs: 0.625rem; /* 10px */
+    --text-ui-3xs: 0.5rem; /* 8px */
+
+    --leading-display: 1.1;
+    --leading-heading: 1.25;
+    --leading-body: 1.625;
+    --leading-compact: 1.5;
+
+    --tracking-tight: -0.025em;
+    --tracking-tighter: -0.03em;
+  }
+}
+
+/* Typography Scale & Styles */
+@layer base {
+  /* Base font settings */
+  html {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    font-optical-sizing: auto;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Heading styles */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-secondary-900);
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+  }
+
+  h4 {
+    font-size: var(--text-h4);
+  }
+
+  h5 {
+    font-size: var(--text-h5);
+  }
+
+  h6 {
+    font-size: var(--text-h6);
+  }
+
+  /* Body text */
+  p {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-secondary-500); /* Hints & P tags color */
+  }
+
+  /* Emphasis (semantic elements) */
+  strong,
+  b {
+    font-weight: 700;
+    color: var(--color-secondary-900);
+  }
+
+  /* Small text */
+  small, .text-sm {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--color-secondary-500); /* Hints & P tags color */
+  }
+
+  /* Extra small text */
+  .text-xs {
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
+  }
+
+  /* Large text */
+  .text-lg {
+    font-size: 1.125rem;
+    line-height: var(--leading-body);
+  }
+
+  /* Extra large text */
+  .text-xl {
+    font-size: 1.25rem;
+    line-height: var(--leading-body);
+  }
+
+  /* Code & Pre */
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  code {
+    padding: 0.125rem 0.375rem;
+    background-color: var(--color-surface-100);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+  }
+
+  pre {
+    padding: 1rem;
+    background-color: var(--color-surface-900);
+    color: var(--color-surface-100);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+  }
+
+  pre code {
+    padding: 0;
+    background: transparent;
+  }
+}
+
+/* Font Weight Utilities */
+@layer utilities {
+  .font-regular { font-weight: 400; }
+  .font-medium { font-weight: 500; }
+  .font-semibold { font-weight: 600; }
+  .font-bold { font-weight: 700; }
+  .font-extrabold { font-weight: 800; }
+}
+
+/* Semantic Typography Utilities (Phase 1) */
+@layer utilities {
+  /* Display (hero/marketing) */
+  .text-display-lg {
+    font-size: var(--text-display-lg);
+    font-weight: 800;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  .text-display-md {
+    font-size: var(--text-display-md);
+    font-weight: 800;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  .text-display-sm {
+    font-size: var(--text-display-sm);
+    font-weight: 800;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  /* Marketing display helpers (Phase 3)
+     Responsive without relying on Tailwind variant generation for custom classes. */
+  .text-display-hero {
+    font-size: clamp(3rem, 5vw + 1rem, 4.5rem); /* 48px → 72px */
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  .text-display-section {
+    font-size: clamp(2.25rem, 4vw + 0.75rem, 3.75rem); /* 36px → 60px */
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  .text-display-subhero {
+    font-size: clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem); /* 24px → 30px */
+    font-weight: 700;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .text-display-price {
+    font-size: clamp(2.5rem, 3vw + 1rem, 3rem); /* 40px → 48px */
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  .text-lead {
+    font-size: clamp(1.25rem, 1.5vw + 0.875rem, 1.5rem); /* 20px → 24px */
+    font-weight: 400;
+    line-height: var(--leading-body);
+  }
+
+  /* Headings (use with any element) */
+  .heading-1 {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tighter);
+  }
+
+  .heading-2 {
+    font-size: var(--text-h2);
+    font-weight: 700;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .heading-3 {
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .heading-4 {
+    font-size: var(--text-h4);
+    font-weight: 600;
+    line-height: var(--leading-heading);
+  }
+
+  .heading-5 {
+    font-size: var(--text-h5);
+    font-weight: 600;
+    line-height: var(--leading-heading);
+  }
+
+  /* Body text */
+  .text-body {
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: var(--leading-body);
+  }
+
+  .text-body-sm {
+    font-size: var(--text-body-sm);
+    font-weight: 400;
+    line-height: var(--leading-compact);
+  }
+
+  .text-caption {
+    font-size: var(--text-caption);
+    font-weight: 400;
+    line-height: var(--leading-compact);
+  }
+
+  /* Emphasis helpers (use on strong/b/span) */
+  .text-emphasis { font-weight: 600; }
+  .text-strong { font-weight: 700; }
+
+  /* Labels & badges */
+  .text-label {
+    font-size: var(--text-body-sm);
+    font-weight: 500;
+    line-height: var(--leading-compact);
+  }
+
+  .text-label-sm {
+    font-size: var(--text-caption);
+    font-weight: 600;
+    line-height: var(--leading-compact);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .text-badge {
+    font-size: var(--text-badge);
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* UI micro sizes (use instead of text-[Npx]) */
+  .text-ui {
+    font-size: var(--text-ui);
+    line-height: var(--leading-compact);
+  }
+
+  .text-ui-sm {
+    font-size: var(--text-ui-sm);
+    line-height: var(--leading-compact);
+  }
+
+  .text-ui-xs {
+    font-size: var(--text-ui-xs);
+    line-height: var(--leading-compact);
+  }
+
+  .text-ui-2xs {
+    font-size: var(--text-ui-2xs);
+    line-height: var(--leading-compact);
+  }
+
+  .text-ui-3xs {
+    font-size: var(--text-ui-3xs);
+    line-height: var(--leading-compact);
+  }
+}
+
+/* Text Gradient Effect */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, rgb(var(--theme-primary)) 0%, rgb(var(--theme-accent)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

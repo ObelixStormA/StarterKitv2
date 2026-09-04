@@ -1,0 +1,63 @@
+{
+  "name": "adminex-react-free",
+  "version": "1.2.0",
+  "description": "Adminex Free — React Admin Dashboard built with React 19, TypeScript, Vite 8, and Tailwind CSS 4",
+  "author": "DevCraftify",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "keywords": [
+    "react",
+    "admin",
+    "dashboard",
+    "template",
+    "react-admin",
+    "admin-dashboard",
+    "react-dashboard",
+    "typescript",
+    "vite",
+    "tailwindcss",
+    "react-19",
+    "admin-panel",
+    "free"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devcraftify/adminex-react-free"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@iconify-icons/solar": "^1.2.3",
+    "@iconify/react": "^6.0.2",
+    "@tailwindcss/vite": "^4.3.1",
+    "chart.js": "^4.5.1",
+    "react": "^19.2.7",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^19.2.7",
+    "react-router": "^8.0.0",
+    "swiper": "^12.2.0",
+    "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "25.9.2",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "eslint": "10.4.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.2",
+    "globals": "17.6.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.60.1",
+    "vite": "8.0.16"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

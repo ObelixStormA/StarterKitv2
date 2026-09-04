@@ -1,0 +1,195 @@
+/* ========================================
+   Adminex - Theme Variables
+   CSS custom properties for theming
+   ======================================== */
+
+@theme {
+  /* Brand accent colors */
+  --theme-primary: 59 130 246; /* Blue 500 */
+  --theme-accent: 99 102 241; /* Indigo 500 */
+
+  /* Tailwind color-token aliases, enables bg-theme-primary/10 etc. opacity-modifier syntax */
+  --color-theme-primary: rgb(var(--theme-primary) / <alpha-value>);
+  --color-theme-accent: rgb(var(--theme-accent) / <alpha-value>);
+
+  /* Primary Colors - Pink (Creative) */
+  --color-primary-50: #fdf2f8;
+  --color-primary-100: #fce7f3;
+  --color-primary-200: #fbcfe8;
+  --color-primary-300: #f9a8d4;
+  --color-primary-400: #f472b6;
+  --color-primary-500: #ec4899;
+  --color-primary-600: #db2777;
+  --color-primary-700: #be185d;
+  --color-primary-800: #9d174d;
+  --color-primary-900: #831843;
+  --color-primary-950: #500724;
+
+  /* Secondary Colors - Blue Grey (Professional & Clean) */
+  --color-secondary-50: #eff2f5;
+  --color-secondary-100: #dde2e7;
+  --color-secondary-200: #bdc6cf;
+  --color-secondary-300: #9daab7;
+  --color-secondary-400: #7d8e9f;
+  --color-secondary-500: #5d7287; /* Hints & P tags */
+  --color-secondary-600: #4c637d;
+  --color-secondary-700: #3c546e;
+  --color-secondary-800: #2c445e;
+  --color-secondary-900: #1d354f; /* Main Text */
+  --color-secondary-950: #0e1c2b;
+
+  /* Accent Colors - Sky (Creative Contrast) */
+  --color-accent-50: #f0f9ff;
+  --color-accent-100: #e0f2fe;
+  --color-accent-200: #bae6fd;
+  --color-accent-300: #7dd3fc;
+  --color-accent-400: #38bdf8;
+  --color-accent-500: #0ea5e9;
+  --color-accent-600: #0284c7;
+  --color-accent-700: #0369a1;
+  --color-accent-800: #075985;
+  --color-accent-900: #0c4a6e;
+  --color-accent-950: #082f49;
+
+  /* Success Colors */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-success-900: #14532d;
+  --color-success-950: #052e16;
+
+  /* Warning Colors */
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-200: #fde68a;
+  --color-warning-300: #fcd34d;
+  --color-warning-400: #fbbf24;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+  --color-warning-800: #92400e;
+  --color-warning-900: #78350f;
+  --color-warning-950: #451a03;
+
+  /* Danger/Error Colors */
+  --color-danger-50: #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-200: #fecaca;
+  --color-danger-300: #fca5a5;
+  --color-danger-400: #f87171;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+  --color-danger-800: #991b1b;
+  --color-danger-900: #7f1d1d;
+  --color-danger-950: #450a0a;
+
+  /* Info Colors */
+  --color-info-50: #ecfeff;
+  --color-info-100: #cffafe;
+  --color-info-200: #a5f3fc;
+  --color-info-300: #67e8f9;
+  --color-info-400: #22d3ee;
+  --color-info-500: #06b6d4;
+  --color-info-600: #0891b2;
+  --color-info-700: #0e7490;
+  --color-info-800: #155e75;
+  --color-info-900: #164e63;
+  --color-info-950: #083344;
+
+  /* Surface Colors */
+  --color-surface-50: #fafafa;
+  --color-surface-100: #f4f4f5;
+  --color-surface-200: #e4e4e7;
+  --color-surface-300: #d4d4d8;
+  --color-surface-400: #a1a1aa;
+  --color-surface-500: #71717a;
+  --color-surface-600: #52525b;
+  --color-surface-700: #3f3f46;
+  --color-surface-800: #27272a;
+  --color-surface-900: #18181b;
+  --color-surface-950: #09090b;
+
+  /* Typography - Defined in fonts.css, fallbacks here */
+  --font-sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, Consolas, monospace;
+  --font-display: "DM Sans", var(--font-sans);
+
+  /* Border Radius — single value for all UI elements */
+  --radius: 0.625rem; /* 10px */
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
+
+  /* Shadows - Softer and more diffuse */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 12px 24px -6px rgb(0 0 0 / 0.1), 0 6px 12px -6px rgb(0 0 0 / 0.06);
+  --shadow-xl: 0 24px 48px -12px rgb(0 0 0 / 0.15);
+  --shadow-2xl: 0 32px 64px -12px rgb(0 0 0 / 0.2);
+
+  /* Card elevation — static, no hover lift */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -4px rgb(0 0 0 / 0.06);
+  --shadow-card-ring: 0 0 0 1px rgb(0 0 0 / 0.03);
+
+  /* Button heights */
+  --btn-height-xs: 1.75rem;
+  --btn-height-sm: 2rem;
+  --btn-height-md: 2.5rem;
+  --btn-height-lg: 2.75rem;
+
+  /* Icon-only buttons */
+  --btn-icon-size-xs: 2rem;
+  --btn-icon-size-sm: 2.375rem;
+  --btn-icon-size-md: 2.75rem;
+  --btn-icon-size-lg: 3rem;
+  --btn-icon-glyph-xs: 1rem;
+  --btn-icon-glyph-sm: 1.125rem;
+  --btn-icon-glyph-md: 1.25rem;
+  --btn-icon-glyph-lg: 1.375rem;
+
+  /* Spacing — 4px grid */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Layout rhythm */
+  --page-padding: var(--space-6);
+  --card-padding: var(--space-6);
+  --section-gap: var(--space-6);
+  --field-gap: var(--space-5);
+
+  /* Layout Dimensions */
+  --pro-banner-height: 2.5rem;
+
+  /* Animation Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-customizer: 1080;
+}

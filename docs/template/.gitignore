@@ -1,0 +1,53 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Environment variables (never commit secrets or local config)
+.env
+.env.*
+!.env.example
+
+# Build caches
+.vite
+*.tsbuildinfo
+
+# Test / coverage output
+coverage
+
+# Documentation (local only — not published)
+/docs
+/documentation
+
+# Marketplace & purchase artifacts (Envato / ThemeForest — do not publish)
+description.txt
+LICENSE.txt
+
+# Internal product planning (premium roadmap, not for public repo)
+COMPLEX_LOGIC_ROADMAP.md
+
+# Private submodule config (exposes SSH URL to private docs repo)
+.gitmodules
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS junk
+Thumbs.db

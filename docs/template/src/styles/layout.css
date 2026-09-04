@@ -1,0 +1,19 @@
+/* ========================================
+   Adminex - Layout Styles
+   Styles for different layout configurations
+   ======================================== */
+
+@layer utilities {
+  /* --------------------------------
+     Container (Boxed)
+     -------------------------------- */
+
+  .layout-container {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}

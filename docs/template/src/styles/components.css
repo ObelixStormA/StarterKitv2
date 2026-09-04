@@ -1,0 +1,298 @@
+/* ========================================
+   Adminex - Component Styles
+   Reusable component utility classes
+   ======================================== */
+
+@layer utilities {
+  /* --------------------------------
+     Card Styles
+     -------------------------------- */
+  
+  .card {
+    background-color: white;
+    border-radius: var(--radius-xl);
+    border: none;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.02); /* Softer, more modern shadow */
+    transition: box-shadow var(--duration-normal), border-color var(--duration-normal);
+  }
+
+  .card:hover {
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  }
+
+  /* --------------------------------
+     Card Hover Effect
+     -------------------------------- */
+  
+  .card-hover {
+    transition: transform var(--duration-normal), box-shadow var(--duration-normal);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* --------------------------------
+     Glass Morphism
+     -------------------------------- */
+  
+  .glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  /* --------------------------------
+     Gradient Text
+     -------------------------------- */
+  
+  .text-gradient {
+    background: linear-gradient(to right, rgb(var(--theme-primary)), rgb(var(--theme-accent)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700; /* Make it pop */
+  }
+
+  .bg-gradient-theme {
+    background: linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-accent)));
+  }
+
+  /* --------------------------------
+     Theme Color Utilities
+     -------------------------------- */
+  
+  .bg-theme-primary {
+    background-color: rgb(var(--theme-primary)) !important;
+  }
+
+  .bg-theme-primary:hover {
+    background-color: rgb(var(--theme-primary)) !important;
+    filter: brightness(0.95);
+  }
+
+  .bg-theme-primary-light {
+    background-color: rgba(var(--theme-primary), 0.1);
+  }
+
+  .text-theme-primary {
+    color: rgb(var(--theme-primary));
+  }
+
+  .border-theme-primary {
+    border-color: rgb(var(--theme-primary));
+  }
+
+  .ring-theme-primary {
+    --tw-ring-color: rgb(var(--theme-primary));
+  }
+
+  .shadow-theme-primary {
+    box-shadow: 0 10px 25px -5px rgb(var(--theme-primary) / 0.25);
+  }
+
+  .bg-theme-accent {
+    background-color: rgb(var(--theme-accent));
+  }
+
+  .text-theme-accent {
+    color: rgb(var(--theme-accent));
+  }
+
+  /* Button with theme color */
+  .btn-theme-primary {
+    background-color: rgb(var(--theme-primary));
+    color: white;
+    transition: all 0.2s ease;
+  }
+
+  .btn-theme-primary:hover {
+    filter: brightness(0.9);
+    box-shadow: 0 4px 15px rgb(var(--theme-primary) / 0.4);
+  }
+
+  .btn-theme-outline {
+    background-color: transparent;
+    border: 1px solid rgb(var(--theme-primary));
+    color: rgb(var(--theme-primary));
+    transition: all 0.2s ease;
+  }
+
+  .btn-theme-outline:hover {
+    background-color: rgb(var(--theme-primary) / 0.1);
+  }
+
+  /* Fix hover states - ensure text stays visible */
+  .hover\:bg-surface-100:hover {
+    background-color: var(--color-surface-100) !important;
+  }
+
+  /* Hover border to theme color */
+  .hover\:border-theme-primary:hover {
+    border-color: rgb(var(--theme-primary));
+  }
+
+  /* Focus ring with theme color */
+  .focus\:ring-theme-primary:focus {
+    --tw-ring-color: rgb(var(--theme-primary) / 0.5);
+  }
+
+  .focus\:border-theme-primary:focus {
+    border-color: rgb(var(--theme-primary));
+  }
+
+  /* Input with theme focus */
+  .input-theme {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-surface-300);
+    background-color: white;
+    color: var(--color-secondary-900);
+    transition: all 0.2s ease;
+  }
+
+  .input-theme::placeholder {
+    color: var(--color-secondary-400);
+  }
+
+  .input-theme:focus {
+    outline: none;
+    border-color: rgb(var(--theme-primary));
+    box-shadow: 0 0 0 3px rgb(var(--theme-primary) / 0.15);
+  }
+
+  /* Custom focus ring utility for inputs */
+  .focus\:ring-theme-primary\/20:focus {
+    --tw-ring-color: rgb(var(--theme-primary) / 0.2);
+  }
+
+  .focus\:border-theme-primary:focus {
+    border-color: rgb(var(--theme-primary)) !important;
+  }
+
+  /* --------------------------------
+     Input Focus Styles (Global)
+     -------------------------------- */
+
+  /* Style all inputs, selects, textareas with theme color on focus */
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="tel"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="url"]:focus,
+  select:focus,
+  textarea:focus {
+    border-color: rgb(var(--theme-primary)) !important;
+    box-shadow: 0 0 0 3px rgb(var(--theme-primary) / 0.1) !important;
+  }
+
+  /* --------------------------------
+     Button Hover Fix
+     -------------------------------- */
+
+  /* Ensure action buttons have proper hover states */
+  button.p-2:hover {
+    color: inherit;
+  }
+
+  /* Fix icon buttons hover - keep text visible */
+  .text-secondary-500:hover {
+    color: var(--color-secondary-500);
+  }
+
+  /* Override for specific hover color transitions */
+  .hover\:text-theme-primary:hover {
+    color: rgb(var(--theme-primary)) !important;
+  }
+
+  .hover\:text-info-600:hover {
+    color: var(--color-info-600) !important;
+  }
+
+  .hover\:text-danger-600:hover {
+    color: var(--color-danger-600) !important;
+  }
+
+  /* Fix for table action button hover backgrounds */
+  .hover\:bg-surface-100:hover {
+    background-color: var(--color-surface-100);
+    color: inherit;
+  }
+
+  /* Ensure hover on danger bg doesn't make text white */
+  .hover\:bg-danger-50:hover {
+    background-color: var(--color-danger-50);
+  }
+
+  /* Checkbox with theme color */
+  .checkbox-theme {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-surface-300);
+    accent-color: rgb(var(--theme-primary));
+  }
+
+  .checkbox-theme:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(var(--theme-primary) / 0.15);
+  }
+
+  /* --------------------------------
+     Scrollbar Styles
+     -------------------------------- */
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-surface-400) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-surface-400);
+    border-radius: 3px;
+  }
+
+  /* --------------------------------
+     Skeleton Loading
+     -------------------------------- */
+  
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface-200) 25%,
+      var(--color-surface-300) 50%,
+      var(--color-surface-200) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}

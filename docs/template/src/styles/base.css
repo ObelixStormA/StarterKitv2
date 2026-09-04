@@ -1,0 +1,44 @@
+/* ========================================
+   Adminex - Base Styles
+   Core resets and base element styles
+   ======================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-secondary-50); /* Use tinted background instead of pure white */
+    color: var(--color-secondary-900);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Focus styles for accessibility */
+  :focus-visible {
+    outline: 2px solid rgb(var(--theme-primary));
+    outline-offset: 2px;
+  }
+
+  /* Remove default focus outline for inputs when using custom focus */
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+  }
+
+  /* Selection styles */
+  ::selection {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-900);
+  }
+}
