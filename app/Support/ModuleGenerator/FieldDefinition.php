@@ -58,6 +58,18 @@ final class FieldDefinition
         return Str::camel($this->name);
     }
 
+    /**
+     * Bog'langan modelning to'liq (fully-qualified) klass nomi, masalan
+     * `\App\Models\Category`. Backslash qiymatning ICHIDA saqlanadi —
+     * shablon matnida `\{$expr}` shaklida yozish PHP heredoc/qo'shtirnoqli
+     * satr interpolatsiyasini buzadi (backslash `{`ni "yutib", figurali
+     * qavslar chiqish natijasida so'zma-so'z qolib ketadi).
+     */
+    public function relationFqcn(): string
+    {
+        return '\\App\\Models\\' . $this->relationModel;
+    }
+
     public function label(): string
     {
         return Str::headline($this->name);
@@ -133,6 +145,7 @@ final class FieldDefinition
         return match ($this->type) {
             'boolean' => 'false',
             'number', 'decimal', 'relation' => "'' as number | ''",
+            'image' => 'null as File | null',
             default => "''",
         };
     }
@@ -142,11 +155,17 @@ final class FieldDefinition
      * field'lar uchun `??` o'rniga to'g'ridan-to'g'ri `as` cast ishlatiladi —
      * aks holda TypeScript har doim mavjud (non-nullable) qiymat uchun
      * union turni (`number | ''`) `number`ga toraytirib, forma bo'sh
-     * qilinganda xato beradi.
+     * qilinganda xato beradi. `image` field har doim `null` bilan
+     * boshlanadi — mavjud rasm URL manzili emas, yangi tanlangan `File`
+     * obyekti saqlanadi (mavjud rasm alohida `<img>` orqali ko'rsatiladi).
      */
     public function editDefaultValue(string $modelVariable): string
     {
         $access = "{$modelVariable}.{$this->columnName()}";
+
+        if ($this->type === 'image') {
+            return 'null as File | null';
+        }
 
         if (in_array($this->type, ['number', 'decimal', 'relation'], true)) {
             return $this->required ? "{$access} as number | ''" : "{$access} ?? ''";
@@ -208,7 +227,7 @@ final class FieldDefinition
                         <label className="block text-sm font-semibold text-secondary-900 mb-2">{$label}</label>
                         <select
                             value={data.{$name}}
-                            onChange={(e) => setData('{$name}', e.target.value)}
+                            onChange={(e) => setData('{$name}', e.target.value === '' ? '' : Number(e.target.value))}
                             className="input-theme w-full"
                             {$this->requiredAttr()}
                         >
