@@ -146,11 +146,11 @@ final class ModuleGenerator
 
                     public function {$f->relationMethodName()}(): \Illuminate\Database\Eloquent\Relations\BelongsTo
                     {
-                        return \$this->belongsTo(\App\Models\{$f->relationModel}::class);
+                        return \$this->belongsTo({$f->relationFqcn()}::class);
                     }
                 PHP;
             })
-            ->map(fn (string $block) => "\n\n" . $this->reindent(trim($block), 4))
+            ->map(fn (string $block) => "\n" . $this->reindent($this->trimBlankEdges($block), 4))
             ->implode('');
 
         $castsBody = collect($this->fields)
@@ -265,23 +265,26 @@ final class ModuleGenerator
 
     private function writeStoreRequest(): string
     {
-        return $this->writeRequest('Store', required: true);
+        return $this->writeRequest('Store');
     }
 
     private function writeUpdateRequest(): string
     {
-        return $this->writeRequest('Update', required: false);
+        return $this->writeRequest('Update');
     }
 
-    private function writeRequest(string $prefix, bool $required): string
+    /**
+     * Store va Update so'rovlari bir xil qoidalarni ishlatadi — har bir
+     * field o'zining `required` bayrog'iga qarab yoki `required`, yoki
+     * `nullable` bo'ladi (loyihadagi UpdateRoleRequest/UpdateUserRequest
+     * konvensiyasiga mos: majburiy field Edit'da ham majburiy qoladi,
+     * chunki React forma har doim barcha qiymatlarni to'liq yuboradi).
+     */
+    private function writeRequest(string $prefix): string
     {
         $rules = collect($this->fields)
-            ->map(function (FieldDefinition $f) use ($required) {
-                $ruleParts = $f->validationRules();
-                if (! $required) {
-                    $ruleParts[0] = 'sometimes';
-                }
-                $rulesStr = collect($ruleParts)->map(fn ($r) => "'{$r}'")->implode(', ');
+            ->map(function (FieldDefinition $f) {
+                $rulesStr = collect($f->validationRules())->map(fn ($r) => "'{$r}'")->implode(', ');
 
                 return "            '{$f->columnName()}' => [{$rulesStr}],";
             })
@@ -953,7 +956,7 @@ final class ModuleGenerator
         }
 
         $lines = collect($relations)
-            ->map(fn (FieldDefinition $f) => "'{$f->relationMethodName()}Options' => \App\Models\{$f->relationModel}::query()->select('id', 'name')->get(),")
+            ->map(fn (FieldDefinition $f) => "'{$f->relationMethodName()}Options' => {$f->relationFqcn()}::query()->select('id', 'name')->get(),")
             ->implode("\n            ");
 
         return ", [\n            {$lines}\n        ]";
@@ -967,7 +970,7 @@ final class ModuleGenerator
         }
 
         $lines = collect($relations)
-            ->map(fn (FieldDefinition $f) => "'{$f->relationMethodName()}Options' => \App\Models\{$f->relationModel}::query()->select('id', 'name')->get(),")
+            ->map(fn (FieldDefinition $f) => "'{$f->relationMethodName()}Options' => {$f->relationFqcn()}::query()->select('id', 'name')->get(),")
             ->implode("\n            ");
 
         return "\n            + [\n            {$lines}\n        ]";
@@ -1033,6 +1036,17 @@ final class ModuleGenerator
         return collect(explode("\n", $dedented))
             ->map(fn (string $line) => trim($line) === '' ? '' : $pad . $line)
             ->implode("\n");
+    }
+
+    /**
+     * Faqat blokning boshi/oxiridagi BO'SH QATORLARNI (\n) olib tashlaydi —
+     * oddiy `trim()` esa birinchi qatorning o'zidagi kerakli boshlang'ich
+     * probellarni ham yeb qo'yadi, natijada shu qator boshqalardan farqli
+     * (noto'g'ri) chuqurlikda hisoblanib ketadi.
+     */
+    private function trimBlankEdges(string $block): string
+    {
+        return preg_replace('/^\n+|\n+$/', '', $block);
     }
 
     /** Blokning butunlay bo'sh (faqat probel) qatorlarini olib tashlaydi. */
