@@ -34,6 +34,7 @@
 
 **Access control**
 - 🔐 **RBAC (Spatie Permission)** — granular `view / ownview / create / edit / delete` permissions per module, full user & role management
+- 🌐 **Social login (GitHub & Google)** — one-click OAuth login/registration via Laravel Socialite, auto-links to an existing account by email or creates a new one with the default `user` role
 - 🔑 **Two-factor authentication (TOTP)** — QR-code setup with Google Authenticator, recovery codes, enforced at login via a challenge screen
 - ✉️ **Toggleable email verification** — turn the "must verify email" requirement on/off from Admin Settings, no redeploy needed
 - 🗑️ **Soft deletes & trash** — Users and Files can be restored or permanently deleted from a dedicated trash view
@@ -63,6 +64,7 @@
 | Frontend | React 19, TypeScript (strict) |
 | Bridge | Inertia.js 2 — no API/CORS, session auth |
 | RBAC | Spatie Laravel Permission |
+| OAuth | Laravel Socialite (GitHub, Google) |
 | 2FA | pragmarx/google2fa + bacon/bacon-qr-code |
 | Styling | Tailwind CSS |
 | Notifications | SweetAlert2 (UI) + Laravel database notifications (in-app) |
@@ -120,6 +122,8 @@ Email:    admin@admin.com
 Password: password
 ```
 
+> 🌐 To enable GitHub/Google login, create an OAuth App on each provider and set `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` and `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` in `.env` (see `.env.example`). Callback URLs: `{APP_URL}/auth/github/callback` and `{APP_URL}/auth/google/callback`. Optional — regular email/password login works without them.
+
 > ⚠️ In production, start a queue worker (`php artisan queue:work`, ideally under Supervisor/systemd) — verification emails, password resets and in-app notifications are dispatched through the queue.
 
 ### Running tests
@@ -154,6 +158,7 @@ Released under the [MIT license](https://opensource.org/licenses/MIT).
 
 **Kirish va xavfsizlik**
 - 🔐 **RBAC (Spatie Permission)** — har bir modul uchun `view / ownview / create / edit / delete` granulyar ruxsatlar, rol va foydalanuvchi boshqaruvi
+- 🌐 **Ijtimoiy tarmoq orqali kirish (GitHub va Google)** — Laravel Socialite orqali bir tugma bilan OAuth login/ro'yxatdan o'tish, mavjud emailga avtomatik bog'lanadi yoki standart `user` roli bilan yangi hisob yaratadi
 - 🔑 **Ikki bosqichli autentifikatsiya (TOTP)** — Google Authenticator bilan QR kod orqali sozlash, zaxira kodlar, login vaqtida majburiy tekshiruv
 - ✉️ **Yoqiladigan/o'chiriladigan email tasdiqlash** — "Admin sozlamalari"dan bir tugma bilan yoqib-o'chirish mumkin, qayta deploy shart emas
 - 🗑️ **Soft delete va Savat** — Foydalanuvchilar va Fayllarni alohida "Savat" sahifasidan tiklash yoki butunlay o'chirish mumkin
@@ -183,6 +188,7 @@ Released under the [MIT license](https://opensource.org/licenses/MIT).
 | Frontend | React 19, TypeScript (strict) |
 | Ko'prik | Inertia.js 2 — API/CORS yo'q, session auth |
 | RBAC | Spatie Laravel Permission |
+| OAuth | Laravel Socialite (GitHub, Google) |
 | 2FA | pragmarx/google2fa + bacon/bacon-qr-code |
 | Stil | Tailwind CSS |
 | Bildirishnoma | SweetAlert2 (UI) + Laravel database notifications (ilova ichi) |
@@ -240,6 +246,8 @@ Email:  admin@admin.com
 Parol:  password
 ```
 
+> 🌐 GitHub/Google orqali kirishni yoqish uchun har bir provayderda OAuth App yarating va `.env` faylga `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` hamda `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` qiymatlarini kiriting (`.env.example`ga qarang). Callback URL'lar: `{APP_URL}/auth/github/callback` va `{APP_URL}/auth/google/callback`. Bu ixtiyoriy — oddiy email/parol orqali kirish ularsiz ham ishlayveradi.
+
 > ⚠️ Production muhitida navbat (queue) worker'ini ishga tushiring (`php artisan queue:work`, afzalroq Supervisor/systemd orqali) — tasdiqlash email'lari, parol tiklash va ilova ichidagi bildirishnomalar navbat orqali yuboriladi.
 
 ### Testlarni ishga tushirish
@@ -274,6 +282,7 @@ Ilovani (PHP-FPM), nginx proksini, PostgreSQL'ni va alohida navbat (queue) worke
 
 **Доступ и безопасность**
 - 🔐 **RBAC (Spatie Permission)** — детализированные права `view / ownview / create / edit / delete` для каждого модуля, полное управление пользователями и ролями
+- 🌐 **Вход через соцсети (GitHub и Google)** — вход/регистрация через OAuth в один клик (Laravel Socialite), автоматическая привязка к существующему аккаунту по email или создание нового с ролью `user`
 - 🔑 **Двухфакторная аутентификация (TOTP)** — настройка через QR-код с Google Authenticator, резервные коды, обязательная проверка при входе
 - ✉️ **Включаемое/отключаемое подтверждение email** — переключается одним тумблером в настройках админки, без передеплоя
 - 🗑️ **Мягкое удаление и корзина** — пользователей и файлы можно восстановить или удалить навсегда из отдельной корзины
@@ -303,6 +312,7 @@ Ilovani (PHP-FPM), nginx proksini, PostgreSQL'ni va alohida navbat (queue) worke
 | Frontend | React 19, TypeScript (strict) |
 | Мост | Inertia.js 2 — без API/CORS, аутентификация через сессии |
 | RBAC | Spatie Laravel Permission |
+| OAuth | Laravel Socialite (GitHub, Google) |
 | 2FA | pragmarx/google2fa + bacon/bacon-qr-code |
 | Стили | Tailwind CSS |
 | Уведомления | SweetAlert2 (UI) + Laravel database notifications (внутри приложения) |
@@ -359,6 +369,8 @@ npm run build   # или: npm run dev
 Email:  admin@admin.com
 Пароль: password
 ```
+
+> 🌐 Чтобы включить вход через GitHub/Google, создайте OAuth-приложение у каждого провайдера и укажите в `.env` `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` и `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` (см. `.env.example`). Callback-URL: `{APP_URL}/auth/github/callback` и `{APP_URL}/auth/google/callback`. Это необязательно — обычный вход по email/паролю работает и без них.
 
 > ⚠️ В продакшене запустите обработчик очереди (`php artisan queue:work`, желательно через Supervisor/systemd) — письма подтверждения, сброс пароля и уведомления внутри приложения отправляются через очередь.
 
