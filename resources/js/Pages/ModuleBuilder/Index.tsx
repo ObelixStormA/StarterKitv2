@@ -40,6 +40,8 @@ function makeField(): FieldRow {
     };
 }
 
+const compactInput = 'input-theme w-full !py-2 !px-3 text-sm';
+
 export default function Index({ fieldTypes }: { fieldTypes: FieldType[] }) {
     const { t } = useLocale();
     const { flash } = usePage().props as unknown as {
@@ -128,179 +130,184 @@ export default function Index({ fieldTypes }: { fieldTypes: FieldType[] }) {
         >
             <Head title={t('module_builder.title')} />
 
-            <div className="max-w-5xl mx-auto space-y-6">
+            <div className="max-w-6xl mx-auto space-y-4">
                 <p className="text-secondary-500 text-sm">{t('module_builder.subtitle')}</p>
 
                 {flash?.success && (
-                    <div className="p-4 rounded-xl bg-green-50 text-green-700 text-sm font-medium">
+                    <div className="p-3 rounded-xl bg-green-50 text-green-700 text-sm font-medium">
                         {flash.success}
                     </div>
                 )}
 
                 {flash?.error && (
-                    <div className="p-4 rounded-xl bg-red-50 text-red-600 text-sm font-medium">
+                    <div className="p-3 rounded-xl bg-red-50 text-red-600 text-sm font-medium">
                         {flash.error}
                     </div>
                 )}
 
-                <div className="card p-6 space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-semibold text-secondary-900 mb-2">
-                                {t('module_builder.module_name')}
-                            </label>
-                            <input
-                                type="text"
-                                value={moduleName}
-                                onChange={(e) => setModuleName(e.target.value)}
-                                placeholder={t('module_builder.module_name_placeholder')}
-                                className="input-theme w-full"
-                            />
-                            {errors.name && (
-                                <p className="mt-2 text-sm text-red-600">{errors.name}</p>
-                            )}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+                    {/* Left column: fields builder */}
+                    <div className="lg:col-span-2 card p-4">
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-sm font-semibold text-secondary-900">
+                                {t('module_builder.fields_title')}
+                            </h3>
+                            <p className="text-xs text-secondary-400">{t('module_builder.drag_hint')}</p>
                         </div>
 
-                        <div className="flex items-center gap-2 md:pt-8">
-                            <input
-                                id="soft_deletes"
-                                type="checkbox"
-                                checked={softDeletes}
-                                onChange={(e) => setSoftDeletes(e.target.checked)}
-                                className="checkbox-theme"
-                            />
-                            <label htmlFor="soft_deletes" className="text-sm text-secondary-900">
-                                {t('module_builder.soft_deletes')}
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                        <div className="space-y-2">
+                            {fields.map((field, index) => (
+                                <div
+                                    key={field.id}
+                                    draggable
+                                    onDragStart={() => handleDragStart(index)}
+                                    onDragOver={(e) => handleDragOver(e, field.id)}
+                                    onDragLeave={() => setDragOverId((id) => (id === field.id ? null : id))}
+                                    onDrop={() => handleDrop(index)}
+                                    className={`rounded-lg border transition-colors ${
+                                        dragOverId === field.id
+                                            ? 'border-theme-primary bg-theme-primary/5'
+                                            : 'border-surface-200 bg-surface-50/60'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2 p-2">
+                                        <div
+                                            className="cursor-move text-secondary-400 hover:text-secondary-600 flex-shrink-0"
+                                            title={t('module_builder.drag_hint')}
+                                        >
+                                            <GripIcon className="w-4 h-4" />
+                                        </div>
 
-                <div className="card p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-base font-semibold text-secondary-900">
-                            {t('module_builder.fields_title')}
-                        </h3>
-                        <p className="text-xs text-secondary-500">{t('module_builder.drag_hint')}</p>
-                    </div>
-
-                    <div className="space-y-3">
-                        {fields.map((field, index) => (
-                            <div
-                                key={field.id}
-                                draggable
-                                onDragStart={() => handleDragStart(index)}
-                                onDragOver={(e) => handleDragOver(e, field.id)}
-                                onDragLeave={() => setDragOverId((id) => (id === field.id ? null : id))}
-                                onDrop={() => handleDrop(index)}
-                                className={`flex items-start gap-3 p-4 rounded-xl border transition-colors ${
-                                    dragOverId === field.id
-                                        ? 'border-theme-primary bg-theme-primary/5'
-                                        : 'border-surface-200 bg-surface-50/60'
-                                }`}
-                            >
-                                <div className="cursor-move text-secondary-400 hover:text-secondary-600 pt-2" title={t('module_builder.drag_hint')}>
-                                    <GripIcon className="w-5 h-5" />
-                                </div>
-
-                                <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-3">
-                                    <div className="md:col-span-1">
                                         <input
                                             type="text"
                                             value={field.name}
                                             onChange={(e) => updateField(field.id, { name: e.target.value })}
                                             placeholder={t('module_builder.field_name_placeholder')}
-                                            className="input-theme w-full"
+                                            className={`${compactInput} basis-32 flex-1`}
                                         />
-                                        {errors[`fields.${index}.name`] && (
-                                            <p className="mt-1 text-xs text-red-600">{errors[`fields.${index}.name`]}</p>
-                                        )}
+
+                                        <select
+                                            value={field.type}
+                                            onChange={(e) => updateField(field.id, { type: e.target.value as FieldType })}
+                                            className={`${compactInput} basis-28 flex-1`}
+                                        >
+                                            {fieldTypes.map((ft) => (
+                                                <option key={ft} value={ft}>
+                                                    {ft}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        <label className="flex items-center gap-1.5 text-xs text-secondary-500 flex-shrink-0" title={t('module_builder.required')}>
+                                            <input
+                                                type="checkbox"
+                                                checked={field.required}
+                                                onChange={(e) => updateField(field.id, { required: e.target.checked })}
+                                                className="checkbox-theme !w-3.5 !h-3.5"
+                                            />
+                                            {t('module_builder.required')}
+                                        </label>
+
+                                        <label className="flex items-center gap-1.5 text-xs text-secondary-500 flex-shrink-0" title={t('module_builder.show_in_list')}>
+                                            <input
+                                                type="checkbox"
+                                                checked={field.in_index}
+                                                onChange={(e) => updateField(field.id, { in_index: e.target.checked })}
+                                                className="checkbox-theme !w-3.5 !h-3.5"
+                                            />
+                                            {t('module_builder.show_in_list')}
+                                        </label>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => removeField(field.id)}
+                                            disabled={fields.length === 1}
+                                            className="text-red-500 hover:text-red-700 disabled:opacity-30 disabled:cursor-not-allowed text-base leading-none flex-shrink-0 w-5"
+                                            title={t('module_builder.remove_field')}
+                                        >
+                                            ×
+                                        </button>
                                     </div>
 
-                                    <select
-                                        value={field.type}
-                                        onChange={(e) => updateField(field.id, { type: e.target.value as FieldType })}
-                                        className="input-theme w-full"
-                                    >
-                                        {fieldTypes.map((ft) => (
-                                            <option key={ft} value={ft}>
-                                                {ft}
-                                            </option>
-                                        ))}
-                                    </select>
-
-                                    <label className="flex items-center gap-2 text-sm text-secondary-900">
-                                        <input
-                                            type="checkbox"
-                                            checked={field.required}
-                                            onChange={(e) => updateField(field.id, { required: e.target.checked })}
-                                            className="checkbox-theme"
-                                        />
-                                        {t('module_builder.required')}
-                                    </label>
-
-                                    <label className="flex items-center gap-2 text-sm text-secondary-900">
-                                        <input
-                                            type="checkbox"
-                                            checked={field.in_index}
-                                            onChange={(e) => updateField(field.id, { in_index: e.target.checked })}
-                                            className="checkbox-theme"
-                                        />
-                                        {t('module_builder.show_in_list')}
-                                    </label>
-
-                                    {field.type === 'select' && (
-                                        <input
-                                            type="text"
-                                            value={field.options}
-                                            onChange={(e) => updateField(field.id, { options: e.target.value })}
-                                            placeholder={t('module_builder.options_placeholder')}
-                                            className="input-theme w-full md:col-span-4"
-                                        />
+                                    {errors[`fields.${index}.name`] && (
+                                        <p className="px-2 pb-2 text-xs text-red-600">{errors[`fields.${index}.name`]}</p>
                                     )}
 
-                                    {field.type === 'relation' && (
-                                        <input
-                                            type="text"
-                                            value={field.relation_model}
-                                            onChange={(e) => updateField(field.id, { relation_model: e.target.value })}
-                                            placeholder={t('module_builder.relation_model_placeholder')}
-                                            className="input-theme w-full md:col-span-4"
-                                        />
+                                    {(field.type === 'select' || field.type === 'relation') && (
+                                        <div className="px-2 pb-2 pl-8">
+                                            <input
+                                                type="text"
+                                                value={field.type === 'select' ? field.options : field.relation_model}
+                                                onChange={(e) =>
+                                                    updateField(
+                                                        field.id,
+                                                        field.type === 'select'
+                                                            ? { options: e.target.value }
+                                                            : { relation_model: e.target.value },
+                                                    )
+                                                }
+                                                placeholder={
+                                                    field.type === 'select'
+                                                        ? t('module_builder.options_placeholder')
+                                                        : t('module_builder.relation_model_placeholder')
+                                                }
+                                                className={compactInput}
+                                            />
+                                        </div>
                                     )}
                                 </div>
+                            ))}
+                        </div>
 
-                                <button
-                                    type="button"
-                                    onClick={() => removeField(field.id)}
-                                    disabled={fields.length === 1}
-                                    className="text-red-500 hover:text-red-700 disabled:opacity-30 disabled:cursor-not-allowed px-2 pt-2 text-lg leading-none"
-                                    title={t('module_builder.remove_field')}
-                                >
-                                    ×
-                                </button>
-                            </div>
-                        ))}
+                        <button
+                            type="button"
+                            onClick={addField}
+                            className="mt-3 px-3 py-1.5 rounded-lg text-xs font-semibold text-theme-primary border border-theme-primary/30 hover:bg-theme-primary/5"
+                        >
+                            + {t('module_builder.add_field')}
+                        </button>
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={addField}
-                        className="mt-4 px-4 py-2 rounded-xl text-sm font-semibold text-theme-primary border border-theme-primary/30 hover:bg-theme-primary/5"
-                    >
-                        + {t('module_builder.add_field')}
-                    </button>
-                </div>
+                    {/* Right column: module settings + submit */}
+                    <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-20">
+                        <div className="card p-4 space-y-4">
+                            <div>
+                                <label className="block text-xs font-semibold text-secondary-900 mb-1.5">
+                                    {t('module_builder.module_name')}
+                                </label>
+                                <input
+                                    type="text"
+                                    value={moduleName}
+                                    onChange={(e) => setModuleName(e.target.value)}
+                                    placeholder={t('module_builder.module_name_placeholder')}
+                                    className={compactInput}
+                                />
+                                {errors.name && (
+                                    <p className="mt-1.5 text-xs text-red-600">{errors.name}</p>
+                                )}
+                            </div>
 
-                <div className="flex justify-end">
-                    <button
-                        type="button"
-                        onClick={submit}
-                        disabled={processing}
-                        className="px-6 py-3 btn-theme-primary font-semibold rounded-xl text-sm"
-                    >
-                        {processing ? '...' : t('module_builder.generate')}
-                    </button>
+                            <label className="flex items-center gap-2 text-sm text-secondary-900">
+                                <input
+                                    id="soft_deletes"
+                                    type="checkbox"
+                                    checked={softDeletes}
+                                    onChange={(e) => setSoftDeletes(e.target.checked)}
+                                    className="checkbox-theme"
+                                />
+                                {t('module_builder.soft_deletes')}
+                            </label>
+
+                            <button
+                                type="button"
+                                onClick={submit}
+                                disabled={processing}
+                                className="w-full px-4 py-2.5 btn-theme-primary font-semibold rounded-xl text-sm"
+                            >
+                                {processing ? '...' : t('module_builder.generate')}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>
