@@ -6,6 +6,7 @@ export default {
     'nav.settings': 'Sozlamalar',
     'nav.files': 'Fayllar',
     'nav.audit': 'Faoliyat jurnali',
+    'nav.module_builder': 'Modul generatori',
     'nav.notifications': 'Bildirishnomalar',
     'nav.account': 'Hisob',
     'nav.profile': 'Hisob sozlamalari',
@@ -242,7 +243,25 @@ export default {
     'files.total_used': 'Jami ishlatilgan',
     'files.all_categories': 'Barchasi',
 
+    'module_builder.title': 'Modul generatori',
+    'module_builder.subtitle': "To'liq CRUD modulini (backend + React sahifalar) fieldlarni sudrab-tashlab tuzing",
+    'module_builder.module_name': 'Modul nomi',
+    'module_builder.module_name_placeholder': 'Masalan: Product',
+    'module_builder.soft_deletes': "Soft delete va Savat (Trash) qo'shilsin",
+    'module_builder.fields_title': 'Fieldlar',
+    'module_builder.drag_hint': "Tartibini o'zgartirish uchun sudrab-tashlang",
+    'module_builder.add_field': 'Field qo\'shish',
+    'module_builder.generate': 'Modulni yaratish',
+    'module_builder.field_name_placeholder': 'field_nomi',
+    'module_builder.required': 'Majburiy',
+    'module_builder.show_in_list': "Ro'yxatda ko'rsatilsin",
+    'module_builder.options_placeholder': 'Variantlar, vergul bilan: draft,active,archived',
+    'module_builder.relation_model_placeholder': "Bog'langan model: Category",
+    'module_builder.remove_field': "Field'ni o'chirish",
+    'module_builder.error_name_required': 'Modul nomini kiriting',
+
     'language.uz': "O'zbekcha",
     'language.ru': 'Русский',
     'language.en': 'English',
+
 };

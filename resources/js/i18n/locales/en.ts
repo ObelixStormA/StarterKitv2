@@ -8,6 +8,7 @@ const en: typeof Uz = {
     'nav.settings': 'Settings',
     'nav.files': 'Files',
     'nav.audit': 'Audit Log',
+    'nav.module_builder': 'Module Builder',
     'nav.notifications': 'Notifications',
     'nav.account': 'Account',
     'nav.profile': 'Account Settings',
@@ -244,9 +245,27 @@ const en: typeof Uz = {
     'files.total_used': 'Total used',
     'files.all_categories': 'All',
 
+    'module_builder.title': 'Module Builder',
+    'module_builder.subtitle': 'Build a complete CRUD module (backend + React pages) by dragging and dropping fields',
+    'module_builder.module_name': 'Module name',
+    'module_builder.module_name_placeholder': 'e.g. Product',
+    'module_builder.soft_deletes': 'Include soft delete and a Trash page',
+    'module_builder.fields_title': 'Fields',
+    'module_builder.drag_hint': 'Drag to reorder',
+    'module_builder.add_field': 'Add field',
+    'module_builder.generate': 'Generate module',
+    'module_builder.field_name_placeholder': 'field_name',
+    'module_builder.required': 'Required',
+    'module_builder.show_in_list': 'Show in list',
+    'module_builder.options_placeholder': 'Options, comma-separated: draft,active,archived',
+    'module_builder.relation_model_placeholder': 'Related model: Category',
+    'module_builder.remove_field': 'Remove field',
+    'module_builder.error_name_required': 'Enter a module name',
+
     'language.uz': "O'zbekcha",
     'language.ru': 'Русский',
     'language.en': 'English',
+
 };
 
 export default en;

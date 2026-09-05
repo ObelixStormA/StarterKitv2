@@ -8,6 +8,7 @@ import {
     ShieldIcon,
     UserIcon,
     UsersIcon,
+    WandIcon,
 } from '@/Components/Icons';
 import GlobalSearch from '@/Components/GlobalSearch';
 import LanguageSwitcher from '@/Components/LanguageSwitcher';
@@ -35,9 +36,10 @@ export default function AuthenticatedLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const { auth, site } = usePage().props as unknown as {
+    const { auth, site, isLocal } = usePage().props as unknown as {
         auth: { user: { name: string; email: string; avatar_url?: string | null }; roles: string[] };
         site: { name: string; logo: string; favicon: string };
+        isLocal?: boolean;
     };
     const user = auth.user;
     const { can, canAny } = usePermission();
@@ -100,6 +102,14 @@ export default function AuthenticatedLayout({
                           href: route('audit.index'),
                           icon: AuditIcon,
                           active: route().current('audit.*'),
+                      }]
+                    : []),
+                ...(isLocal && can('settings.edit')
+                    ? [{
+                          label: t('nav.module_builder'),
+                          href: route('module-builder.index'),
+                          icon: WandIcon,
+                          active: route().current('module-builder.*'),
                       }]
                     : []),
             ],
