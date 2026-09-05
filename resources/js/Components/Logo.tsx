@@ -7,17 +7,19 @@ export default function Logo({
     imgClassName = 'h-7',
     textClassName = 'text-lg font-bold text-secondary-900',
 }: {
-    site: SiteBranding;
+    site?: SiteBranding;
     imgClassName?: string;
     textClassName?: string;
 }) {
-    const hasCustomLogo = site.logo !== DEFAULT_LOGO_PATH;
-    const iconSrc = hasCustomLogo ? site.logo : '/assets/logo/mark.svg';
+    const name = site?.name ?? 'Laravel';
+    const logo = site?.logo ?? DEFAULT_LOGO_PATH;
+    const hasCustomLogo = logo !== DEFAULT_LOGO_PATH;
+    const iconSrc = hasCustomLogo ? logo : '/assets/logo/mark.svg';
 
     return (
         <span className="inline-flex items-center gap-2">
-            <img src={iconSrc} alt={site.name} className={`${imgClassName} object-contain`} />
-            <span className={textClassName}>{site.name}</span>
+            <img src={iconSrc} alt={name} className={`${imgClassName} object-contain`} />
+            <span className={textClassName}>{name}</span>
         </span>
     );
 }

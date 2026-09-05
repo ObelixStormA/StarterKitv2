@@ -1,7 +1,8 @@
 import InputError from '@/Components/InputError';
+import SocialLoginButtons from '@/Components/SocialLoginButtons';
 import AuthLayout from '@/Layouts/AuthLayout';
 import { useLocale } from '@/i18n/LocaleProvider';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 export default function Login({
@@ -12,6 +13,7 @@ export default function Login({
     canResetPassword: boolean;
 }) {
     const { t } = useLocale();
+    const { flash } = usePage().props as unknown as { flash?: { error?: string | null } };
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -43,6 +45,12 @@ export default function Login({
                 {status && (
                     <div className="mb-4 text-sm font-medium text-green-600">
                         {status}
+                    </div>
+                )}
+
+                {flash?.error && (
+                    <div className="mb-4 text-sm font-medium text-red-600">
+                        {flash.error}
                     </div>
                 )}
 
@@ -116,6 +124,8 @@ export default function Login({
                         {t('auth.login.submit')}
                     </button>
                 </form>
+
+                <SocialLoginButtons />
 
                 <div className="mt-8 text-center text-sm text-secondary-500">
                     {t('auth.login.no_account')}{' '}

@@ -41,6 +41,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 && in_array($status, [403, 404, 419, 429, 500, 503], true)
                 && (app()->environment('production') || $exception instanceof HttpExceptionInterface)
             ) {
+                \Inertia\Inertia::share(
+                    app(\App\Http\Middleware\HandleInertiaRequests::class)->share($request)
+                );
+
                 return \Inertia\Inertia::render('Error', ['status' => $status])
                     ->toResponse($request)
                     ->setStatusCode($status);

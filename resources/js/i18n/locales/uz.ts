@@ -45,6 +45,7 @@ export default {
     'auth.login.submit': 'Kirish',
     'auth.login.no_account': "Akkountingiz yo'qmi?",
     'auth.login.create_account': "Ro'yxatdan o'tish",
+    'auth.or_continue_with': 'yoki davom eting',
 
     'auth.register.title': 'Hisob yarating',
     'auth.register.subtitle': "Boshlash uchun ma'lumotlaringizni kiriting",

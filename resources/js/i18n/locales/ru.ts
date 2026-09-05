@@ -47,6 +47,7 @@ const ru: typeof Uz = {
     'auth.login.submit': 'Войти',
     'auth.login.no_account': 'Нет аккаунта?',
     'auth.login.create_account': 'Зарегистрироваться',
+    'auth.or_continue_with': 'или продолжите через',
 
     'auth.register.title': 'Создать аккаунт',
     'auth.register.subtitle': 'Введите данные, чтобы начать',

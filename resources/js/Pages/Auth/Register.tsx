@@ -1,4 +1,5 @@
 import InputError from '@/Components/InputError';
+import SocialLoginButtons from '@/Components/SocialLoginButtons';
 import AuthLayout from '@/Layouts/AuthLayout';
 import { useLocale } from '@/i18n/LocaleProvider';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -118,6 +119,8 @@ export default function Register() {
                         {t('auth.register.submit')}
                     </button>
                 </form>
+
+                <SocialLoginButtons />
 
                 <div className="mt-8 text-center text-sm text-secondary-500">
                     {t('auth.register.already_have_account')}{' '}

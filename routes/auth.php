@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\TwoFactorController;
@@ -41,6 +42,12 @@ Route::middleware('guest')->group(function () {
 
     Route::post('two-factor-challenge', [TwoFactorChallengeController::class, 'store'])
         ->name('two-factor.challenge.store');
+
+    Route::get('auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+        ->name('social.redirect');
+
+    Route::get('auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+        ->name('social.callback');
 });
 
 Route::middleware('auth')->group(function () {

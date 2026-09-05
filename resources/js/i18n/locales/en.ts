@@ -47,6 +47,7 @@ const en: typeof Uz = {
     'auth.login.submit': 'Sign in',
     'auth.login.no_account': "Don't have an account?",
     'auth.login.create_account': 'Sign up',
+    'auth.or_continue_with': 'or continue with',
 
     'auth.register.title': 'Create an account',
     'auth.register.subtitle': 'Enter your details to get started',
