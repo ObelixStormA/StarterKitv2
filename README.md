@@ -1,9 +1,11 @@
 <p align="center">
-  <img src="public/assets/logo/logo.svg" width="260" alt="StarterKitV2 Logo">
+  <img src="public/assets/logo/logo.svg" width="260" alt="StarterKitV2 — open-source Laravel and React admin panel starter kit logo">
 </p>
 
+<h1 align="center">StarterKitV2 — Laravel &amp; React Admin Panel Starter Kit</h1>
+
 <p align="center">
-  <strong>Laravel 13 + React 19 + Inertia.js</strong> — Modular Admin Panel Starter Kit
+  <strong>Laravel 13 + React 19 + Inertia.js</strong> — an open-source, production-ready admin dashboard boilerplate with RBAC, 2FA, OAuth login, file manager, audit log and a CRUD generator.
 </p>
 
 <p align="center">
@@ -23,13 +25,17 @@
   <a href="#-русский">Русский</a>
 </p>
 
+<p align="center">
+  A free, open-source alternative to paid Laravel admin panel templates — Laravel 13, React 19, TypeScript, Tailwind CSS, Spatie Permission RBAC, PostgreSQL, Docker.
+</p>
+
 ---
 
 ## 🇬🇧 English
 
 ### What is this?
 
-**StarterKitV2** is a production-ready admin panel starter kit built on **Laravel** and **React**, glued together with **Inertia.js** — no API layer, no CORS, one app, one deploy. Every CRUD module follows the same pattern (`Controller → Service → Request → React pages`), so adding a new module takes minutes, not hours.
+**StarterKitV2** is a free, open-source **Laravel admin panel starter kit** built with **Laravel 13**, **React 19** and **TypeScript**, glued together by **Inertia.js** — no separate API layer, no CORS, one codebase, one deploy. If you're looking for a **Laravel React boilerplate**, a **Laravel dashboard template**, or an alternative to paid admin panel kits, this project gives you a working RBAC admin panel, user management, 2FA, OAuth login, a file manager and an audit log out of the box. Every CRUD module follows the same pattern (`Controller → Service → Request → React pages`), so adding a new module takes minutes, not hours — or generate one instantly with the built-in `php artisan crud:generate` command.
 
 ### Features
 
@@ -179,7 +185,7 @@ Released under the [MIT license](https://opensource.org/licenses/MIT).
 
 ### Nima bu?
 
-**StarterKitV2** — Laravel va React'ni Inertia.js orqali birlashtirgan, production uchun tayyor **admin panel boshlang'ich shabloni**. API yo'q, CORS yo'q — bitta ilova, bitta deploy. Har bir CRUD modul bir xil naqsh bo'yicha qurilgan (`Controller → Service → Request → React sahifalar`), shuning uchun yangi modul qo'shish daqiqalar ichida bajariladi.
+**StarterKitV2** — **Laravel va React asosida qurilgan bepul, ochiq kodli admin panel boshlang'ich shabloni** (starter kit). Laravel 13, React 19 va TypeScript'ni Inertia.js orqali birlashtiradi — alohida API qatlami yo'q, CORS yo'q, bitta ilova, bitta deploy. Agar siz **Laravel admin panel**, **Laravel + React boshlang'ich shablon** yoki pullik admin panel shablonlariga bepul muqobil qidirayotgan bo'lsangiz — bu loyihada RBAC (rol va ruxsatlar), foydalanuvchi boshqaruvi, 2FA, OAuth orqali kirish, fayl menejeri va audit jurnali tayyor holda mavjud. Har bir CRUD modul bir xil naqsh bo'yicha qurilgan (`Controller → Service → Request → React sahifalar`), shuning uchun yangi modul qo'shish daqiqalar ichida bajariladi — yoki `php artisan crud:generate` buyrug'i bilan bir zumda generatsiya qiling.
 
 ### Xususiyatlar
 
@@ -329,7 +335,7 @@ Ilovani (PHP-FPM), nginx proksini, PostgreSQL'ni va alohida navbat (queue) worke
 
 ### Что это?
 
-**StarterKitV2** — готовый к продакшену стартовый набор для админ-панели на основе **Laravel** и **React**, связанных через **Inertia.js** — без API-слоя, без CORS, одно приложение, один деплой. Каждый CRUD-модуль построен по одному и тому же шаблону (`Controller → Service → Request → React-страницы`), поэтому добавление нового модуля занимает минуты, а не часы.
+**StarterKitV2** — бесплатный стартовый набор для админ-панели с открытым исходным кодом на основе **Laravel 13**, **React 19** и **TypeScript**, связанных через **Inertia.js** — без отдельного API-слоя, без CORS, один репозиторий, один деплой. Если вы ищете **шаблон админ-панели Laravel**, **Laravel + React boilerplate** или бесплатную альтернативу платным админ-шаблонам — здесь уже готовы RBAC (роли и права), управление пользователями, двухфакторная аутентификация, вход через OAuth, файловый менеджер и журнал действий. Каждый CRUD-модуль построен по одному и тому же шаблону (`Controller → Service → Request → React-страницы`), поэтому добавление нового модуля занимает минуты — либо сгенерируйте его мгновенно командой `php artisan crud:generate`.
 
 ### Возможности
 
