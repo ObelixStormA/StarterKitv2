@@ -55,6 +55,7 @@ class HandleInertiaRequests extends Middleware
                 'logo' => fn () => $this->settings->get('admin', 'site_logo', '/assets/logo/logo.svg'),
                 'favicon' => fn () => $this->settings->get('admin', 'site_favicon', '/assets/logo/favicon.ico'),
             ],
+            'isLocal' => app()->environment('local'),
         ];
     }
 }

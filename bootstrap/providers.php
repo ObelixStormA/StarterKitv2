@@ -2,6 +2,7 @@
 
 use App\Modules\Audit\AuditServiceProvider;
 use App\Modules\File\FileServiceProvider;
+use App\Modules\ModuleBuilder\ModuleBuilderServiceProvider;
 use App\Modules\Notification\NotificationServiceProvider;
 use App\Modules\Role\RoleServiceProvider;
 use App\Modules\Search\SearchServiceProvider;
@@ -18,4 +19,5 @@ return [
     AuditServiceProvider::class,
     NotificationServiceProvider::class,
     SearchServiceProvider::class,
+    ModuleBuilderServiceProvider::class,
 ];

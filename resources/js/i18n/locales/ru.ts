@@ -8,6 +8,7 @@ const ru: typeof Uz = {
     'nav.settings': 'Настройки',
     'nav.files': 'Файлы',
     'nav.audit': 'Журнал действий',
+    'nav.module_builder': 'Конструктор модулей',
     'nav.notifications': 'Уведомления',
     'nav.account': 'Аккаунт',
     'nav.profile': 'Настройки аккаунта',
@@ -244,9 +245,27 @@ const ru: typeof Uz = {
     'files.total_used': 'Всего использовано',
     'files.all_categories': 'Все',
 
+    'module_builder.title': 'Конструктор модулей',
+    'module_builder.subtitle': 'Соберите полноценный CRUD-модуль (бэкенд + страницы React), перетаскивая поля',
+    'module_builder.module_name': 'Название модуля',
+    'module_builder.module_name_placeholder': 'Например: Product',
+    'module_builder.soft_deletes': 'Добавить мягкое удаление и Корзину',
+    'module_builder.fields_title': 'Поля',
+    'module_builder.drag_hint': 'Перетащите для изменения порядка',
+    'module_builder.add_field': 'Добавить поле',
+    'module_builder.generate': 'Создать модуль',
+    'module_builder.field_name_placeholder': 'имя_поля',
+    'module_builder.required': 'Обязательное',
+    'module_builder.show_in_list': 'Показывать в списке',
+    'module_builder.options_placeholder': 'Варианты через запятую: draft,active,archived',
+    'module_builder.relation_model_placeholder': 'Связанная модель: Category',
+    'module_builder.remove_field': 'Удалить поле',
+    'module_builder.error_name_required': 'Введите название модуля',
+
     'language.uz': "O'zbekcha",
     'language.ru': 'Русский',
     'language.en': 'English',
+
 };
 
 export default ru;

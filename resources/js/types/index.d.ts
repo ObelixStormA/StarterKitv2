@@ -97,4 +97,5 @@ export type PageProps<
         roles: string[];
     };
     site: SiteBranding;
+    isLocal?: boolean;
 };

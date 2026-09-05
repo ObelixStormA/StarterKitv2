@@ -28,6 +28,28 @@ export const DashboardIcon = (props: IconProps) =>
         props,
     );
 
+export const WandIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M15 4V2m0 6V6m3.5 1.5L20 6m-8.5 1.5L10 6M4 20l9-9m3-3 2 2" />
+            <path d="M17 4h2m-1-1v2" />
+        </>,
+        props,
+    );
+
+export const GripIcon = (props: IconProps) =>
+    base(
+        <>
+            <circle cx="9" cy="6" r="1" fill="currentColor" stroke="none" />
+            <circle cx="9" cy="12" r="1" fill="currentColor" stroke="none" />
+            <circle cx="9" cy="18" r="1" fill="currentColor" stroke="none" />
+            <circle cx="15" cy="6" r="1" fill="currentColor" stroke="none" />
+            <circle cx="15" cy="12" r="1" fill="currentColor" stroke="none" />
+            <circle cx="15" cy="18" r="1" fill="currentColor" stroke="none" />
+        </>,
+        props,
+    );
+
 export const UserIcon = (props: IconProps) =>
     base(
         <>
