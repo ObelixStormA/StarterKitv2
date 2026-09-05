@@ -7,13 +7,14 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/ObelixStormA/StarterKitv2/actions/workflows/tests.yml"><img src="https://github.com/ObelixStormA/StarterKitv2/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
   <img src="https://img.shields.io/badge/PHP-8.3+-777BB4?logo=php&logoColor=white" alt="PHP 8.3+">
   <img src="https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white" alt="Laravel 13">
   <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React 19">
   <img src="https://img.shields.io/badge/Inertia.js-2-9553E9?logo=inertia&logoColor=white" alt="Inertia.js 2">
   <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/tests-41%20passing-brightgreen?logo=pestphp&logoColor=white" alt="41 tests passing">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
+  <a href="https://github.com/ObelixStormA/StarterKitv2/stargazers"><img src="https://img.shields.io/github/stars/ObelixStormA/StarterKitv2?style=flat&color=yellow" alt="GitHub stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License"></a>
 </p>
 
 <p align="center">
