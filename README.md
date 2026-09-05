@@ -53,6 +53,7 @@
 - 🔔 **SweetAlert2** — polished confirmation dialogs and toast notifications for every CRUD action
 - 🎨 **Tailwind CSS** design system — responsive, theme-ready
 - 🧩 **Modular monolith architecture** — `app/Modules/{User,Role,Setting,File,Audit,Notification,Search}`, each self-contained with its own Controller/Service/Request/Migrations
+- ⚡ **`php artisan crud:generate`** — scaffold a full CRUD module (backend + React pages, permissions, i18n) with one interactive command
 - ✅ **41 Pest tests** covering CRUD, RBAC, soft deletes and the audit log
 - 🐳 **Docker & CI** — ready-to-use `Dockerfile` / `docker-compose.yml` and a GitHub Actions test workflow
 - 🖼️ **Branded error pages** — 403/404/419/429/500/503 rendered as themed Inertia pages instead of the default Laravel screen
@@ -127,6 +128,31 @@ Password: password
 
 > ⚠️ In production, start a queue worker (`php artisan queue:work`, ideally under Supervisor/systemd) — verification emails, password resets and in-app notifications are dispatched through the queue.
 
+### CRUD generator
+
+Scaffold a complete CRUD module (migration, model, service, form requests, controller, routes, service provider) plus matching React/Inertia pages (Index/Create/Edit/Trashed) with one interactive command:
+
+```bash
+php artisan crud:generate Product
+```
+
+You'll be asked for each field's name, type (`text`, `textarea`, `number`, `decimal`, `boolean`, `email`, `url`, `date`, `datetime`, `select`, `image`, `relation`), whether it's required, and whether it shows in the index table. The generator also:
+
+- registers the new `{Model}ServiceProvider` in `bootstrap/providers.php`
+- adds the module's permissions to `RolePermissionSeeder`
+- adds a TypeScript interface to `resources/js/types/index.d.ts`
+- adds `uz`/`ru`/`en` translation keys for the new module
+
+After generating, run:
+
+```bash
+php artisan migrate
+php artisan db:seed --class=RolePermissionSeeder
+npm run build
+```
+
+> The generator logic lives in `App\Support\ModuleGenerator` — a plain PHP service independent of the CLI, so it can also power a future drag-and-drop "Module Builder" UI without duplicating the code.
+
 ### Running tests
 
 ```bash
@@ -177,6 +203,7 @@ Released under the [MIT license](https://opensource.org/licenses/MIT).
 - 🔔 **SweetAlert2** — barcha CRUD amallar uchun chiroyli tasdiqlash va bildirishnoma oynalari
 - 🎨 **Tailwind CSS** dizayn tizimi — moslashuvchan, mavzu qo'llab-quvvatlashga tayyor
 - 🧩 **Modulli monolit arxitektura** — `app/Modules/{User,Role,Setting,File,Audit,Notification,Search}` — har biri o'z Controller/Service/Request/Migration to'plami bilan mustaqil
+- ⚡ **`php artisan crud:generate`** — bitta interaktiv buyruq bilan to'liq CRUD modulini (backend + React sahifalar, ruxsatlar, i18n) generatsiya qiladi
 - ✅ **41 ta Pest test** — CRUD, RBAC, soft delete va audit logni qamrab oladi
 - 🐳 **Docker va CI** — tayyor `Dockerfile` / `docker-compose.yml` va GitHub Actions test pipeline
 - 🖼️ **Brendlangan xato sahifalari** — 403/404/419/429/500/503 standart Laravel sahifasi o'rniga admin panelning o'z uslubida ko'rsatiladi
@@ -251,6 +278,31 @@ Parol:  password
 
 > ⚠️ Production muhitida navbat (queue) worker'ini ishga tushiring (`php artisan queue:work`, afzalroq Supervisor/systemd orqali) — tasdiqlash email'lari, parol tiklash va ilova ichidagi bildirishnomalar navbat orqali yuboriladi.
 
+### CRUD generator
+
+To'liq CRUD modulini (migration, model, service, form request'lar, controller, routes, service provider) va unga mos React/Inertia sahifalarini (Index/Create/Edit/Trashed) bitta interaktiv buyruq bilan yarating:
+
+```bash
+php artisan crud:generate Product
+```
+
+Har bir field uchun nomi, turi (`text`, `textarea`, `number`, `decimal`, `boolean`, `email`, `url`, `date`, `datetime`, `select`, `image`, `relation`), majburiy-majburiy emasligi va ro'yxat (index) jadvalida ko'rsatilish-ko'rsatilmasligi so'raladi. Generator shuningdek:
+
+- yangi `{Model}ServiceProvider`ni `bootstrap/providers.php`ga ro'yxatdan o'tkazadi
+- modul ruxsatlarini `RolePermissionSeeder`ga qo'shadi
+- `resources/js/types/index.d.ts`ga TypeScript interfeysini qo'shadi
+- yangi modul uchun `uz`/`ru`/`en` tarjima kalitlarini qo'shadi
+
+Generatsiyadan keyin quyidagilarni ishga tushiring:
+
+```bash
+php artisan migrate
+php artisan db:seed --class=RolePermissionSeeder
+npm run build
+```
+
+> Generator logikasi `App\Support\ModuleGenerator`da joylashgan — bu CLI'dan mustaqil, sof PHP servis, shuning uchun kelajakda drag-and-drop "Module Builder" UI'ni ham xuddi shu kodni takrorlamasdan quvvatlantirishi mumkin.
+
 ### Testlarni ishga tushirish
 
 ```bash
@@ -301,6 +353,7 @@ Ilovani (PHP-FPM), nginx proksini, PostgreSQL'ni va alohida navbat (queue) worke
 - 🔔 **SweetAlert2** — аккуратные диалоги подтверждения и всплывающие уведомления для каждого CRUD-действия
 - 🎨 **Дизайн-система Tailwind CSS** — адаптивная, готова к темизации
 - 🧩 **Модульная монолитная архитектура** — `app/Modules/{User,Role,Setting,File,Audit,Notification,Search}`, каждый модуль самодостаточен со своими Controller/Service/Request/Migrations
+- ⚡ **`php artisan crud:generate`** — создаёт полноценный CRUD-модуль (бэкенд + страницы React, права, i18n) одной интерактивной командой
 - ✅ **41 тест на Pest** — покрывают CRUD, RBAC, мягкое удаление и журнал действий
 - 🐳 **Docker и CI** — готовые `Dockerfile` / `docker-compose.yml` и пайплайн тестов GitHub Actions
 - 🖼️ **Фирменные страницы ошибок** — 403/404/419/429/500/503 отображаются в стиле админ-панели вместо стандартного экрана Laravel
@@ -374,6 +427,31 @@ Email:  admin@admin.com
 > 🌐 Чтобы включить вход через GitHub/Google, создайте OAuth-приложение у каждого провайдера и укажите в `.env` `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` и `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` (см. `.env.example`). Callback-URL: `{APP_URL}/auth/github/callback` и `{APP_URL}/auth/google/callback`. Это необязательно — обычный вход по email/паролю работает и без них.
 
 > ⚠️ В продакшене запустите обработчик очереди (`php artisan queue:work`, желательно через Supervisor/systemd) — письма подтверждения, сброс пароля и уведомления внутри приложения отправляются через очередь.
+
+### Генератор CRUD
+
+Создайте полноценный CRUD-модуль (миграция, модель, сервис, form request'ы, контроллер, маршруты, service provider) и соответствующие страницы React/Inertia (Index/Create/Edit/Trashed) одной интерактивной командой:
+
+```bash
+php artisan crud:generate Product
+```
+
+Для каждого поля будет запрошено имя, тип (`text`, `textarea`, `number`, `decimal`, `boolean`, `email`, `url`, `date`, `datetime`, `select`, `image`, `relation`), обязательность и нужно ли показывать поле в таблице списка. Генератор также:
+
+- регистрирует новый `{Model}ServiceProvider` в `bootstrap/providers.php`
+- добавляет права модуля в `RolePermissionSeeder`
+- добавляет TypeScript-интерфейс в `resources/js/types/index.d.ts`
+- добавляет ключи перевода `uz`/`ru`/`en` для нового модуля
+
+После генерации выполните:
+
+```bash
+php artisan migrate
+php artisan db:seed --class=RolePermissionSeeder
+npm run build
+```
+
+> Логика генератора находится в `App\Support\ModuleGenerator` — это обычный PHP-сервис, независимый от CLI, поэтому в будущем он сможет питать drag-and-drop UI «Module Builder» без дублирования кода.
 
 ### Запуск тестов
 
