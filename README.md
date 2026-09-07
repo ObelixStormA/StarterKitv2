@@ -29,6 +29,22 @@
   A free, open-source alternative to paid Laravel admin panel templates — Laravel 13, React 19, TypeScript, Tailwind CSS, Spatie Permission RBAC, PostgreSQL, Docker.
 </p>
 
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/login.png" alt="Login page with email/password and GitHub/Google social login"></td>
+    <td width="50%"><img src="docs/screenshots/dashboard.png" alt="StarterKitV2 admin dashboard with sidebar navigation"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/users.png" alt="User management page with roles and search"></td>
+    <td width="50%"><img src="docs/screenshots/account-settings.png" alt="Account settings page with profile, security and devices tabs"></td>
+  </tr>
+  <tr>
+    <td width="50%" colspan="2"><img src="docs/screenshots/module-builder.png" alt="Visual drag-and-drop CRUD module builder"></td>
+  </tr>
+</table>
+
 ---
 
 ## 🇬🇧 English
@@ -157,7 +173,7 @@ php artisan db:seed --class=RolePermissionSeeder
 npm run build
 ```
 
-> The generator logic lives in `App\Support\ModuleGenerator` — a plain PHP service independent of the CLI, so it can also power a future drag-and-drop "Module Builder" UI without duplicating the code.
+> The generator logic lives in `App\Support\ModuleGenerator` — a plain PHP service independent of the CLI. It also powers a visual **Module Builder** at `/admin/module-builder`, where you can add and drag-to-reorder fields instead of using the terminal. It's only available in the `local` environment (hidden from the sidebar and returns 404 elsewhere) since it writes files to disk.
 
 ### Running tests
 
@@ -307,7 +323,7 @@ php artisan db:seed --class=RolePermissionSeeder
 npm run build
 ```
 
-> Generator logikasi `App\Support\ModuleGenerator`da joylashgan — bu CLI'dan mustaqil, sof PHP servis, shuning uchun kelajakda drag-and-drop "Module Builder" UI'ni ham xuddi shu kodni takrorlamasdan quvvatlantirishi mumkin.
+> Generator logikasi `App\Support\ModuleGenerator`da joylashgan — bu CLI'dan mustaqil, sof PHP servis. U shuningdek `/admin/module-builder` manzilidagi vizual **Module Builder**ni ham quvvatlantiradi — u yerda terminal o'rniga fieldlarni qo'shib, sudrab-tashlab tartibini o'zgartirish mumkin. Bu sahifa faqat `local` muhitda ishlaydi (boshqa joyda sidebar'da ko'rinmaydi va 404 qaytaradi), chunki u diskka fayl yozadi.
 
 ### Testlarni ishga tushirish
 
@@ -457,7 +473,7 @@ php artisan db:seed --class=RolePermissionSeeder
 npm run build
 ```
 
-> Логика генератора находится в `App\Support\ModuleGenerator` — это обычный PHP-сервис, независимый от CLI, поэтому в будущем он сможет питать drag-and-drop UI «Module Builder» без дублирования кода.
+> Логика генератора находится в `App\Support\ModuleGenerator` — это обычный PHP-сервис, независимый от CLI. Он же питает визуальный **Module Builder** по адресу `/admin/module-builder`, где поля можно добавлять и перетаскивать для изменения порядка вместо использования терминала. Доступен только в окружении `local` (скрыт из меню и возвращает 404 в остальных) — он записывает файлы на диск.
 
 ### Запуск тестов
 
