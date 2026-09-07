@@ -262,6 +262,10 @@ const ru: typeof Uz = {
     'module_builder.relation_model_placeholder': 'Связанная модель: Category',
     'module_builder.remove_field': 'Удалить поле',
     'module_builder.error_name_required': 'Введите название модуля',
+    'module_builder.existing_title': 'Созданные модули',
+    'module_builder.existing_empty': 'Пока нет модулей, созданных через Конструктор модулей',
+    'module_builder.delete_module': 'Удалить модуль',
+    'module_builder.delete_confirm_text': 'Модуль "{{name}}", его таблица и все данные будут ПОЛНОСТЬЮ удалены. Это действие необратимо!',
 
     'menus.title': 'Меню',
     'menus.new': 'Новое меню',
@@ -279,14 +283,6 @@ const ru: typeof Uz = {
     'menus.system.admin_name': 'Меню админ-панели',
     'menus.system.site_name': 'Меню сайта',
 
-    'products.title': 'Product',
-    'products.new': 'Новый',
-    'products.delete_confirm': 'Удалить "{{name}}"?',
-    'products.create.title': 'Новый',
-    'products.edit.title': 'Редактировать',
-    'products.field.name': 'Name',
-    'products.field.price': 'Price',
-    'products.field.create_at': 'Create At',
     'menus.icon_placeholder': 'Название иконки (напр. UserIcon)',
     'menus.view_icons': 'Список иконок →',
 
@@ -302,8 +298,6 @@ const ru: typeof Uz = {
     'language.uz': "O'zbekcha",
     'language.ru': 'Русский',
     'language.en': 'English',
-
-
 
 };
 

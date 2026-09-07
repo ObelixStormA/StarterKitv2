@@ -1,8 +1,15 @@
-import { GripIcon } from '@/Components/Icons';
+import { EmptyState, TableActionButton, TableActions, TableBody, TableCard, TableHead, Td, Th, Tr } from '@/Components/DataTable';
+import { FileIcon, GripIcon, TrashIcon } from '@/Components/Icons';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useLocale } from '@/i18n/LocaleProvider';
+import { confirmDelete } from '@/lib/swal';
 import { Head, router, usePage } from '@inertiajs/react';
 import { DragEvent, useRef, useState } from 'react';
+
+interface GeneratedModule {
+    name: string;
+    table: string;
+}
 
 type FieldType =
     | 'text'
@@ -42,10 +49,29 @@ function makeField(): FieldRow {
 
 const compactInput = 'input-theme w-full !py-2 !px-3 text-sm';
 
-export default function Index({ fieldTypes }: { fieldTypes: FieldType[] }) {
+export default function Index({
+    fieldTypes,
+    generatedModules,
+}: {
+    fieldTypes: FieldType[];
+    generatedModules: GeneratedModule[];
+}) {
     const { t } = useLocale();
     const { flash } = usePage().props as unknown as {
         flash?: { success?: string | null; error?: string | null };
+    };
+
+    const deleteModule = async (module: GeneratedModule) => {
+        const confirmed = await confirmDelete({
+            title: t('common.are_you_sure'),
+            text: t('module_builder.delete_confirm_text', { name: module.name }),
+            confirmText: t('module_builder.delete_module'),
+            cancelText: t('common.cancel'),
+        });
+
+        if (confirmed) {
+            router.delete(route('module-builder.destroy', module.name));
+        }
     };
 
     const [moduleName, setModuleName] = useState('');
@@ -308,6 +334,42 @@ export default function Index({ fieldTypes }: { fieldTypes: FieldType[] }) {
                             </button>
                         </div>
                     </div>
+                </div>
+
+                <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-secondary-900">
+                        {t('module_builder.existing_title')}
+                    </h3>
+
+                    {generatedModules.length === 0 ? (
+                        <div className="card rounded-xl">
+                            <EmptyState icon={FileIcon} title={t('module_builder.existing_empty')} />
+                        </div>
+                    ) : (
+                        <TableCard>
+                            <TableHead>
+                                <Th>{t('module_builder.module_name')}</Th>
+                                <Th align="right">{t('common.actions')}</Th>
+                            </TableHead>
+                            <TableBody>
+                                {generatedModules.map((module) => (
+                                    <Tr key={module.name}>
+                                        <Td>{module.name}</Td>
+                                        <Td align="right">
+                                            <TableActions>
+                                                <TableActionButton
+                                                    icon={TrashIcon}
+                                                    onClick={() => deleteModule(module)}
+                                                    title={t('module_builder.delete_module')}
+                                                    variant="danger"
+                                                />
+                                            </TableActions>
+                                        </Td>
+                                    </Tr>
+                                ))}
+                            </TableBody>
+                        </TableCard>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -262,6 +262,10 @@ const en: typeof Uz = {
     'module_builder.relation_model_placeholder': 'Related model: Category',
     'module_builder.remove_field': 'Remove field',
     'module_builder.error_name_required': 'Enter a module name',
+    'module_builder.existing_title': 'Generated modules',
+    'module_builder.existing_empty': 'No modules generated via Module Builder yet',
+    'module_builder.delete_module': 'Delete module',
+    'module_builder.delete_confirm_text': 'The "{{name}}" module, its table and all its data will be PERMANENTLY deleted. This cannot be undone!',
 
     'menus.title': 'Menus',
     'menus.new': 'New menu',
@@ -279,14 +283,6 @@ const en: typeof Uz = {
     'menus.system.admin_name': 'Admin panel menu',
     'menus.system.site_name': 'Site menu',
 
-    'products.title': 'Product',
-    'products.new': 'New',
-    'products.delete_confirm': 'Delete "{{name}}"?',
-    'products.create.title': 'New',
-    'products.edit.title': 'Edit',
-    'products.field.name': 'Name',
-    'products.field.price': 'Price',
-    'products.field.create_at': 'Create At',
     'menus.icon_placeholder': 'Icon name (e.g. UserIcon)',
     'menus.view_icons': 'View icon list →',
 
@@ -302,8 +298,6 @@ const en: typeof Uz = {
     'language.uz': "O'zbekcha",
     'language.ru': 'Русский',
     'language.en': 'English',
-
-
 
 };
 

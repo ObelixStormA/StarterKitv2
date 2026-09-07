@@ -40,9 +40,131 @@ final class ModuleGenerator
         }
     }
 
+    /**
+     * Tizimning o'zi bilan birga keladigan, Module Builder orqali
+     * o'chirib bo'lmaydigan modullar.
+     */
+    private const BUILT_IN_MODULES = [
+        'User', 'Role', 'File', 'Setting', 'Audit', 'Notification', 'Search', 'Menu', 'ModuleBuilder',
+    ];
+
     public function moduleExists(): bool
     {
         return File::isDirectory(app_path("Modules/{$this->model}"));
+    }
+
+    /**
+     * Module Builder orqali (yoki `crud:generate` bilan) yaratilgan,
+     * o'chirish mumkin bo'lgan modullar ro'yxati.
+     *
+     * @return array<int, array{name: string, table: string}>
+     */
+    public static function generatedModules(): array
+    {
+        if (! File::isDirectory(app_path('Modules'))) {
+            return [];
+        }
+
+        return collect(File::directories(app_path('Modules')))
+            ->map(fn (string $dir) => basename($dir))
+            ->reject(fn (string $name) => in_array($name, self::BUILT_IN_MODULES, true))
+            ->map(fn (string $name) => [
+                'name' => $name,
+                'table' => Str::snake(Str::plural($name)),
+            ])
+            ->values()
+            ->all();
+    }
+
+    /**
+     * `generate()`ning teskarisi — modulga tegishli barcha fayl va
+     * ro'yxatga olishlarni o'chiradi: backend/frontend fayllar, provider
+     * ro'yxati, permission modul ro'yxati (+bazadagi permissionlar),
+     * sidebar menyu bandi, TypeScript interfeysi, locale kalitlar.
+     *
+     * Modulning o'z jadvali (`Schema::dropIfExists`) HAM o'chiriladi —
+     * bu qaytarib bo'lmaydigan amal, shuning uchun controller darajasida
+     * foydalanuvchidan alohida tasdiq olinishi shart.
+     */
+    public static function destroyModule(string $name): void
+    {
+        $model = Str::studly(Str::singular($name));
+        $table = Str::snake(Str::plural($model));
+
+        if (in_array($model, self::BUILT_IN_MODULES, true)) {
+            throw new RuntimeException("'{$model}' tizim moduli — o'chirib bo'lmaydi.");
+        }
+
+        File::deleteDirectory(app_path("Modules/{$model}"));
+        File::deleteDirectory(resource_path("js/Pages/{$model}"));
+
+        self::unregisterServiceProvider($model);
+        self::unregisterPermissionModule($table);
+        self::unregisterMenuItem($table);
+        self::removeTypeScriptInterface($model);
+        self::removeLocaleKeys($table);
+
+        \Illuminate\Support\Facades\Schema::dropIfExists($table);
+    }
+
+    private static function unregisterServiceProvider(string $model): void
+    {
+        $path = base_path('bootstrap/providers.php');
+        $contents = File::get($path);
+
+        $contents = str_replace("use App\Modules\\{$model}\\{$model}ServiceProvider;\n", '', $contents);
+        $contents = str_replace("    {$model}ServiceProvider::class,\n", '', $contents);
+
+        File::put($path, $contents);
+    }
+
+    private static function unregisterPermissionModule(string $table): void
+    {
+        $path = base_path('database/seeders/RolePermissionSeeder.php');
+        $contents = File::get($path);
+
+        $contents = str_replace("        '{$table}',\n", '', $contents);
+
+        File::put($path, $contents);
+
+        \Spatie\Permission\Models\Permission::where('name', 'like', "{$table}.%")->delete();
+        app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    }
+
+    private static function unregisterMenuItem(string $table): void
+    {
+        if (! class_exists(\App\Modules\Menu\Models\MenuItem::class)) {
+            return;
+        }
+
+        \App\Modules\Menu\Models\MenuItem::where('url', "/admin/{$table}")->forceDelete();
+    }
+
+    private static function removeTypeScriptInterface(string $model): void
+    {
+        $path = resource_path('js/types/index.d.ts');
+        $contents = File::get($path);
+
+        $contents = preg_replace(
+            '/\R?export interface ' . preg_quote($model, '/') . ' \{.*?\R\}\R/s',
+            '',
+            $contents,
+            1
+        );
+
+        File::put($path, $contents);
+    }
+
+    private static function removeLocaleKeys(string $table): void
+    {
+        foreach (['uz', 'ru', 'en'] as $locale) {
+            $path = resource_path("js/i18n/locales/{$locale}.ts");
+            $contents = File::get($path);
+
+            $contents = preg_replace('/^[ \t]*\'' . preg_quote($table, '/') . '\..*?\',\R/m', '', $contents);
+
+            File::put($path, $contents);
+        }
     }
 
     /**

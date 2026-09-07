@@ -28,6 +28,7 @@ class ModuleBuilderController extends BaseController
 
         return Inertia::render('ModuleBuilder/Index', [
             'fieldTypes' => FieldDefinition::TYPES,
+            'generatedModules' => ModuleGenerator::generatedModules(),
         ]);
     }
 
@@ -68,6 +69,19 @@ class ModuleBuilderController extends BaseController
             );
         } catch (\Throwable $e) {
             return back()->with('error', 'Generatsiya xatosi: ' . $e->getMessage());
+        }
+    }
+
+    public function destroy(string $name): RedirectResponse
+    {
+        $this->guard();
+
+        try {
+            ModuleGenerator::destroyModule($name);
+
+            return back()->with('success', "{$name} moduli o'chirildi.");
+        } catch (\Throwable $e) {
+            return back()->with('error', "O'chirishda xatolik: " . $e->getMessage());
         }
     }
 

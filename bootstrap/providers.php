@@ -5,7 +5,6 @@ use App\Modules\File\FileServiceProvider;
 use App\Modules\Menu\MenuServiceProvider;
 use App\Modules\ModuleBuilder\ModuleBuilderServiceProvider;
 use App\Modules\Notification\NotificationServiceProvider;
-use App\Modules\Product\ProductServiceProvider;
 use App\Modules\Role\RoleServiceProvider;
 use App\Modules\Search\SearchServiceProvider;
 use App\Modules\Setting\SettingServiceProvider;
@@ -23,5 +22,4 @@ return [
     SearchServiceProvider::class,
     ModuleBuilderServiceProvider::class,
     MenuServiceProvider::class,
-    ProductServiceProvider::class,
 ];
