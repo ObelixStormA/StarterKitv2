@@ -20,7 +20,15 @@ class UpdateUserRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->route('user'))],
             'password' => ['nullable', 'confirmed', Password::defaults()],
             'roles' => ['array'],
-            'roles.*' => ['string', 'exists:roles,name'],
+            'roles.*' => [
+                'string',
+                'exists:roles,name',
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    if ($value === 'admin' && ! $this->user()->hasRole('admin')) {
+                        $fail("Faqat administrator 'admin' rolini biriktira oladi.");
+                    }
+                },
+            ],
         ];
     }
 }
