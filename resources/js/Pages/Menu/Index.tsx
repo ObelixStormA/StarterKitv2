@@ -1,3 +1,5 @@
+import { EditIcon, MenuIcon, TrashIcon, WandIcon } from '@/Components/Icons';
+import { EmptyState, TableActionButton, TableActions, TableBody, TableCard, TableHead, Td, Th, Tr } from '@/Components/DataTable';
 import InputError from '@/Components/InputError';
 import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -146,30 +148,30 @@ function MenuRow({ menu }: { menu: Menu }) {
     }
 
     return (
-        <tr className="border-b border-surface-100 last:border-0">
-            <td className="py-3 pr-4">
+        <Tr>
+            <Td>
                 <span className="font-mono text-xs text-secondary-500">{menu.key}</span>
-            </td>
-            <td className="py-3 pr-4 text-secondary-900 font-medium">{t(menu.name as MessageKey)}</td>
-            <td className="py-3 pr-4 text-secondary-500">{menu.items_count ?? 0}</td>
-            <td className="py-3 pr-4 text-right space-x-2 whitespace-nowrap">
-                {can('menus.edit') && (
-                    <Link href={route('menus.builder', menu.id)} className="text-theme-primary hover:underline text-sm font-medium">
-                        {t('menus.open_builder')}
-                    </Link>
-                )}
-                {can('menus.edit') && (
-                    <button onClick={() => setEditing(true)} className="text-secondary-500 hover:underline text-sm font-medium">
-                        {t('common.edit')}
-                    </button>
-                )}
-                {can('menus.delete') && (
-                    <button onClick={destroy} className="text-red-600 hover:underline text-sm font-medium">
-                        {t('common.delete')}
-                    </button>
-                )}
-            </td>
-        </tr>
+            </Td>
+            <Td>
+                <span className="text-sm font-medium text-secondary-900">{t(menu.name as MessageKey)}</span>
+            </Td>
+            <Td>
+                <span className="text-sm text-secondary-600">{menu.items_count ?? 0}</span>
+            </Td>
+            <Td align="right">
+                <TableActions>
+                    {can('menus.edit') && (
+                        <TableActionButton icon={WandIcon} href={route('menus.builder', menu.id)} title={t('menus.open_builder')} />
+                    )}
+                    {can('menus.edit') && (
+                        <TableActionButton icon={EditIcon} onClick={() => setEditing(true)} title={t('common.edit')} />
+                    )}
+                    {can('menus.delete') && (
+                        <TableActionButton icon={TrashIcon} onClick={destroy} title={t('common.delete')} variant="danger" />
+                    )}
+                </TableActions>
+            </Td>
+        </Tr>
     );
 }
 
@@ -181,8 +183,8 @@ export default function Index({ menus }: { menus: Paginated<Menu> }) {
         <AuthenticatedLayout header={<h2 className="heading-2 text-secondary-900">{t('menus.title')}</h2>}>
             <Head title={t('menus.title')} />
 
-            <div className="card p-6">
-                <div className="flex items-center justify-end gap-4 mb-6">
+            <div className="space-y-4">
+                <div className="flex items-center justify-end gap-4">
                     {can('menus.delete') && (
                         <Link href={route('menus.trashed')} className="text-sm font-medium text-secondary-500 hover:underline">
                             {t('common.trash')}
@@ -191,23 +193,25 @@ export default function Index({ menus }: { menus: Paginated<Menu> }) {
                     {can('menus.create') && <AddMenuForm />}
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                        <thead>
-                            <tr className="text-left text-secondary-500 border-b border-surface-200">
-                                <th className="py-3 pr-4 font-semibold">{t('menus.field.key')}</th>
-                                <th className="py-3 pr-4 font-semibold">{t('menus.field.name')}</th>
-                                <th className="py-3 pr-4 font-semibold">{t('menus.items_count')}</th>
-                                <th className="py-3 pr-4 font-semibold text-right">{t('common.actions')}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                {menus.data.length === 0 ? (
+                    <div className="card rounded-xl">
+                        <EmptyState icon={MenuIcon} title={t('common.not_found')} />
+                    </div>
+                ) : (
+                    <TableCard>
+                        <TableHead>
+                            <Th>{t('menus.field.key')}</Th>
+                            <Th>{t('menus.field.name')}</Th>
+                            <Th>{t('menus.items_count')}</Th>
+                            <Th align="right">{t('common.actions')}</Th>
+                        </TableHead>
+                        <TableBody>
                             {menus.data.map((menu) => (
                                 <MenuRow key={menu.id} menu={menu} />
                             ))}
-                        </tbody>
-                    </table>
-                </div>
+                        </TableBody>
+                    </TableCard>
+                )}
 
                 <Pagination paginator={menus} />
             </div>

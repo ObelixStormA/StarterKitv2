@@ -1,3 +1,5 @@
+import { EditIcon, TrashIcon, UsersIcon } from '@/Components/Icons';
+import { EmptyState, TableActionButton, TableActions, TableBody, TableCard, TableHead, Td, Th, Tr } from '@/Components/DataTable';
 import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { usePermission } from '@/hooks/usePermission';
@@ -40,8 +42,8 @@ export default function Index({
         <AuthenticatedLayout header={<h2 className="heading-2 text-secondary-900">{t('users.title')}</h2>}>
             <Head title={t('users.title')} />
 
-            <div className="card p-6">
-                <div className="flex items-center justify-between gap-4 mb-6">
+            <div className="space-y-4">
+                <div className="flex items-center justify-between gap-4">
                     <form onSubmit={search} className="flex-1 max-w-sm">
                         <input
                             type="text"
@@ -52,83 +54,84 @@ export default function Index({
                         />
                     </form>
 
-                    {can('users.delete') && (
-                        <Link
-                            href={route('users.trashed')}
-                            className="px-4 py-2.5 rounded-xl text-sm font-semibold text-secondary-500 border border-surface-200 hover:bg-surface-100 whitespace-nowrap"
-                        >
-                            {t('common.trash')}
-                        </Link>
-                    )}
+                    <div className="flex items-center gap-3">
+                        {can('users.delete') && (
+                            <Link
+                                href={route('users.trashed')}
+                                className="px-4 py-2.5 rounded-xl text-sm font-semibold text-secondary-500 border border-surface-200 hover:bg-surface-100 whitespace-nowrap"
+                            >
+                                {t('common.trash')}
+                            </Link>
+                        )}
 
-                    {can('users.create') && (
-                        <Link
-                            href={route('users.create')}
-                            className="px-4 py-2.5 btn-theme-primary font-semibold rounded-xl text-sm whitespace-nowrap"
-                        >
-                            + {t('users.new')}
-                        </Link>
-                    )}
+                        {can('users.create') && (
+                            <Link
+                                href={route('users.create')}
+                                className="px-4 py-2.5 btn-theme-primary font-semibold rounded-xl text-sm whitespace-nowrap"
+                            >
+                                + {t('users.new')}
+                            </Link>
+                        )}
+                    </div>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                        <thead>
-                            <tr className="text-left text-secondary-500 border-b border-surface-200">
-                                <th className="py-3 pr-4 font-semibold">{t('users.table.name')}</th>
-                                <th className="py-3 pr-4 font-semibold">{t('users.table.email')}</th>
-                                <th className="py-3 pr-4 font-semibold">{t('users.table.roles')}</th>
-                                <th className="py-3 pr-4 font-semibold text-right">{t('common.actions')}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.data.map((user) => (
-                                <tr key={user.id} className="border-b border-surface-100 last:border-0">
-                                    <td className="py-3 pr-4 text-secondary-900 font-medium">{user.name}</td>
-                                    <td className="py-3 pr-4 text-secondary-500">{user.email}</td>
-                                    <td className="py-3 pr-4">
-                                        <div className="flex flex-wrap gap-1">
-                                            {user.roles?.map((role) => (
-                                                <span
-                                                    key={role.id}
-                                                    className="px-2 py-0.5 text-xs font-medium rounded-full bg-theme-primary/10 text-theme-primary"
-                                                >
-                                                    {role.name}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </td>
-                                    <td className="py-3 pr-4 text-right space-x-2 whitespace-nowrap">
-                                        {can('users.edit') && (
-                                            <Link
-                                                href={route('users.edit', user.id)}
-                                                className="text-theme-primary hover:underline text-sm font-medium"
+                <TableCard>
+                    <TableHead>
+                        <Th>{t('users.table.name')}</Th>
+                        <Th>{t('users.table.email')}</Th>
+                        <Th>{t('users.table.roles')}</Th>
+                        <Th align="right">{t('common.actions')}</Th>
+                    </TableHead>
+                    <TableBody>
+                        {users.data.map((user) => (
+                            <Tr key={user.id}>
+                                <Td>
+                                    <span className="text-sm font-medium text-secondary-900">{user.name}</span>
+                                </Td>
+                                <Td>
+                                    <span className="text-sm text-secondary-600">{user.email}</span>
+                                </Td>
+                                <Td>
+                                    <div className="flex flex-wrap gap-1">
+                                        {user.roles?.map((role) => (
+                                            <span
+                                                key={role.id}
+                                                className="px-2.5 py-1 text-xs font-medium rounded-full bg-theme-primary/10 text-theme-primary"
                                             >
-                                                {t('common.edit')}
-                                            </Link>
+                                                {role.name}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </Td>
+                                <Td align="right">
+                                    <TableActions>
+                                        {can('users.edit') && (
+                                            <TableActionButton
+                                                icon={EditIcon}
+                                                href={route('users.edit', user.id)}
+                                                title={t('common.edit')}
+                                            />
                                         )}
                                         {can('users.delete') && (
-                                            <button
+                                            <TableActionButton
+                                                icon={TrashIcon}
                                                 onClick={() => destroy(user)}
-                                                className="text-red-600 hover:underline text-sm font-medium"
-                                            >
-                                                {t('common.delete')}
-                                            </button>
+                                                title={t('common.delete')}
+                                                variant="danger"
+                                            />
                                         )}
-                                    </td>
-                                </tr>
-                            ))}
+                                    </TableActions>
+                                </Td>
+                            </Tr>
+                        ))}
+                    </TableBody>
+                </TableCard>
 
-                            {users.data.length === 0 && (
-                                <tr>
-                                    <td colSpan={4} className="py-8 text-center text-secondary-500">
-                                        {t('users.none_found')}
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                {users.data.length === 0 && (
+                    <div className="card rounded-xl">
+                        <EmptyState icon={UsersIcon} title={t('users.none_found')} />
+                    </div>
+                )}
 
                 <Pagination paginator={users} />
             </div>

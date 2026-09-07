@@ -17,6 +17,78 @@ const base = (children: ReactNode, props: IconProps) => (
     </svg>
 );
 
+export const EditIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+        </>,
+        props,
+    );
+
+export const TrashIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M3 6h18" />
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+            <path d="M10 11v6M14 11v6" />
+        </>,
+        props,
+    );
+
+export const PlusIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M12 5v14M5 12h14" />
+        </>,
+        props,
+    );
+
+export const XIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M18 6 6 18M6 6l12 12" />
+        </>,
+        props,
+    );
+
+export const RestoreIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M3 12a9 9 0 1 0 3-6.7" />
+            <path d="M3 4v5h5" />
+        </>,
+        props,
+    );
+
+export const EyeIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+        </>,
+        props,
+    );
+
+export const InboxIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M3 12h4l2 3h6l2-3h4" />
+            <path d="M5 5h14l2 7v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6l2-7Z" />
+        </>,
+        props,
+    );
+
+export const AlertTriangleIcon = (props: IconProps) =>
+    base(
+        <>
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+            <path d="M12 9v4M12 17h.01" />
+        </>,
+        props,
+    );
+
 export const DashboardIcon = (props: IconProps) =>
     base(
         <>

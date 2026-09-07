@@ -276,6 +276,15 @@ export default {
     'menus.no_icon': "Iconkasiz",
     'menus.system.admin_name': 'Admin panel menyusi',
     'menus.system.site_name': 'Sayt menyusi',
+
+    'products.title': 'Product',
+    'products.new': 'Yangi',
+    'products.delete_confirm': '"{{name}}" ni o\'chirasizmi?',
+    'products.create.title': 'Yangi',
+    'products.edit.title': 'Tahrirlash',
+    'products.field.name': 'Name',
+    'products.field.price': 'Price',
+    'products.field.create_at': 'Create At',
     'menus.icon_placeholder': 'Iconka nomi (masalan: UserIcon)',
     'menus.view_icons': 'Iconkalar ro\'yxati →',
 
@@ -291,5 +300,7 @@ export default {
     'language.uz': "O'zbekcha",
     'language.ru': 'Русский',
     'language.en': 'English',
+
+
 
 };

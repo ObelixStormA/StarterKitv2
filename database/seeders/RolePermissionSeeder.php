@@ -26,6 +26,7 @@ class RolePermissionSeeder extends Seeder
         'settings',
         'audit',
         'menus',
+        'products',
     ];
 
     public function run(): void

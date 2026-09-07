@@ -1,3 +1,5 @@
+import { RestoreIcon, TrashIcon, UsersIcon } from '@/Components/Icons';
+import { EmptyState, TableActionButton, TableActions, TableBody, TableCard, TableHead, Td, Th, Tr } from '@/Components/DataTable';
 import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useLocale } from '@/i18n/LocaleProvider';
@@ -29,54 +31,47 @@ export default function Trashed({ users, filters }: { users: Paginated<User>; fi
         <AuthenticatedLayout header={<h2 className="heading-2 text-secondary-900">{t('common.trash')} — {t('users.title')}</h2>}>
             <Head title={`${t('common.trash')} — ${t('users.title')}`} />
 
-            <div className="card p-6">
-                <div className="flex items-center justify-between mb-6">
-                    <Link href={route('users.index')} className="text-sm text-theme-primary hover:underline font-medium">
-                        ← {t('users.title')}
-                    </Link>
-                </div>
+            <div className="space-y-4">
+                <Link href={route('users.index')} className="text-sm text-theme-primary hover:underline font-medium">
+                    ← {t('users.title')}
+                </Link>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                        <thead>
-                            <tr className="text-left text-secondary-500 border-b border-surface-200">
-                                <th className="py-3 pr-4 font-semibold">{t('users.table.name')}</th>
-                                <th className="py-3 pr-4 font-semibold">{t('users.table.email')}</th>
-                                <th className="py-3 pr-4 font-semibold text-right">{t('common.actions')}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                {users.data.length === 0 ? (
+                    <div className="card rounded-xl">
+                        <EmptyState icon={UsersIcon} title={t('common.trash_empty')} />
+                    </div>
+                ) : (
+                    <TableCard>
+                        <TableHead>
+                            <Th>{t('users.table.name')}</Th>
+                            <Th>{t('users.table.email')}</Th>
+                            <Th align="right">{t('common.actions')}</Th>
+                        </TableHead>
+                        <TableBody>
                             {users.data.map((user) => (
-                                <tr key={user.id} className="border-b border-surface-100 last:border-0">
-                                    <td className="py-3 pr-4 text-secondary-900 font-medium">{user.name}</td>
-                                    <td className="py-3 pr-4 text-secondary-500">{user.email}</td>
-                                    <td className="py-3 pr-4 text-right space-x-2 whitespace-nowrap">
-                                        <button
-                                            onClick={() => restore(user)}
-                                            className="text-theme-primary hover:underline text-sm font-medium"
-                                        >
-                                            {t('common.restore')}
-                                        </button>
-                                        <button
-                                            onClick={() => forceDelete(user)}
-                                            className="text-red-600 hover:underline text-sm font-medium"
-                                        >
-                                            {t('common.delete_forever')}
-                                        </button>
-                                    </td>
-                                </tr>
+                                <Tr key={user.id}>
+                                    <Td>
+                                        <span className="text-sm font-medium text-secondary-900">{user.name}</span>
+                                    </Td>
+                                    <Td>
+                                        <span className="text-sm text-secondary-600">{user.email}</span>
+                                    </Td>
+                                    <Td align="right">
+                                        <TableActions>
+                                            <TableActionButton icon={RestoreIcon} onClick={() => restore(user)} title={t('common.restore')} />
+                                            <TableActionButton
+                                                icon={TrashIcon}
+                                                onClick={() => forceDelete(user)}
+                                                title={t('common.delete_forever')}
+                                                variant="danger"
+                                            />
+                                        </TableActions>
+                                    </Td>
+                                </Tr>
                             ))}
-
-                            {users.data.length === 0 && (
-                                <tr>
-                                    <td colSpan={3} className="py-8 text-center text-secondary-500">
-                                        {t('common.trash_empty')}
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                        </TableBody>
+                    </TableCard>
+                )}
 
                 <Pagination paginator={users} />
             </div>

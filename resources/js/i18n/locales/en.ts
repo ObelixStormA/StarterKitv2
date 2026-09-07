@@ -278,6 +278,15 @@ const en: typeof Uz = {
     'menus.no_icon': 'No icon',
     'menus.system.admin_name': 'Admin panel menu',
     'menus.system.site_name': 'Site menu',
+
+    'products.title': 'Product',
+    'products.new': 'New',
+    'products.delete_confirm': 'Delete "{{name}}"?',
+    'products.create.title': 'New',
+    'products.edit.title': 'Edit',
+    'products.field.name': 'Name',
+    'products.field.price': 'Price',
+    'products.field.create_at': 'Create At',
     'menus.icon_placeholder': 'Icon name (e.g. UserIcon)',
     'menus.view_icons': 'View icon list →',
 
@@ -293,6 +302,8 @@ const en: typeof Uz = {
     'language.uz': "O'zbekcha",
     'language.ru': 'Русский',
     'language.en': 'English',
+
+
 
 };
 

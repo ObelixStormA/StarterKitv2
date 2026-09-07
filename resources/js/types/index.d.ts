@@ -121,3 +121,11 @@ export type PageProps<
     isLocal?: boolean;
     adminMenu?: MenuTreeNode[];
 };
+
+export interface Product {
+    id: number;
+    name: string;
+    price: number;
+    create_at?: string | null;
+    created_at: string;
+}

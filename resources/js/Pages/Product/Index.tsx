@@ -1,75 +1,80 @@
-import { EditIcon, ShieldIcon, TrashIcon } from '@/Components/Icons';
+import { EditIcon, FileIcon, TrashIcon } from '@/Components/Icons';
 import { EmptyState, TableActionButton, TableActions, TableBody, TableCard, TableHead, Td, Th, Tr } from '@/Components/DataTable';
 import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { usePermission } from '@/hooks/usePermission';
 import { useLocale } from '@/i18n/LocaleProvider';
 import { confirmDelete } from '@/lib/swal';
-import { Paginated, Role } from '@/types';
+import { Product, Paginated } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 
-export default function Index({ roles }: { roles: Paginated<Role> }) {
+export default function Index({ products }: { products: Paginated<Product> }) {
     const { can } = usePermission();
     const { t } = useLocale();
 
-    const destroy = async (role: Role) => {
+    const destroy = async (item: Product) => {
         const confirmed = await confirmDelete({
             title: t('common.are_you_sure'),
-            text: t('roles.delete_confirm', { name: role.name }),
+            text: t('products.delete_confirm', { name: String(item.id) }),
             confirmText: t('common.confirm_delete_button'),
             cancelText: t('common.cancel'),
         });
 
         if (confirmed) {
-            router.delete(route('roles.destroy', role.id));
+            router.delete(route('products.destroy', item.id));
         }
     };
 
     return (
-        <AuthenticatedLayout header={<h2 className="heading-2 text-secondary-900">{t('roles.title')}</h2>}>
-            <Head title={t('roles.title')} />
+        <AuthenticatedLayout header={<h2 className="heading-2 text-secondary-900">{t('products.title')}</h2>}>
+            <Head title={t('products.title')} />
 
             <div className="space-y-4">
-                <div className="flex items-center justify-end">
-                    {can('roles.create') && (
+                <div className="flex items-center justify-end gap-4">
+                    {can('products.delete') && (
+                        <Link href={route('products.trashed')} className="text-sm font-medium text-secondary-500 hover:underline">
+                            {t('common.trash')}
+                        </Link>
+                    )}
+                    {can('products.create') && (
                         <Link
-                            href={route('roles.create')}
+                            href={route('products.create')}
                             className="px-4 py-2.5 btn-theme-primary font-semibold rounded-xl text-sm"
                         >
-                            + {t('roles.new')}
+                            + {t('products.new')}
                         </Link>
                     )}
                 </div>
 
-                {roles.data.length === 0 ? (
+                {products.data.length === 0 ? (
                     <div className="card rounded-xl">
-                        <EmptyState icon={ShieldIcon} title={t('common.not_found')} />
+                        <EmptyState icon={FileIcon} title={t('common.not_found')} />
                     </div>
                 ) : (
                     <TableCard>
                         <TableHead>
-                            <Th>{t('roles.table.name')}</Th>
-                            <Th>{t('roles.table.permissions_count')}</Th>
+                            <Th>{t('products.field.name')}</Th>
+                            <Th>{t('products.field.price')}</Th>
                             <Th align="right">{t('common.actions')}</Th>
                         </TableHead>
                         <TableBody>
-                            {roles.data.map((role) => (
-                                <Tr key={role.id}>
+                            {products.data.map((item) => (
+                                <Tr key={item.id}>
                                     <Td>
-                                        <span className="text-sm font-medium text-secondary-900 capitalize">{role.name}</span>
+                                        <span className="text-sm font-medium text-secondary-900">{item.name}</span>
                                     </Td>
                                     <Td>
-                                        <span className="text-sm text-secondary-600">{role.permissions_count}</span>
+                                        <span className="text-sm text-secondary-600">{item.price}</span>
                                     </Td>
                                     <Td align="right">
                                         <TableActions>
-                                            {can('roles.edit') && (
-                                                <TableActionButton icon={EditIcon} href={route('roles.edit', role.id)} title={t('common.edit')} />
+                                            {can('products.edit') && (
+                                                <TableActionButton icon={EditIcon} href={route('products.edit', item.id)} title={t('common.edit')} />
                                             )}
-                                            {can('roles.delete') && role.name !== 'admin' && (
+                                            {can('products.delete') && (
                                                 <TableActionButton
                                                     icon={TrashIcon}
-                                                    onClick={() => destroy(role)}
+                                                    onClick={() => destroy(item)}
                                                     title={t('common.delete')}
                                                     variant="danger"
                                                 />
@@ -82,7 +87,7 @@ export default function Index({ roles }: { roles: Paginated<Role> }) {
                     </TableCard>
                 )}
 
-                <Pagination paginator={roles} />
+                <Pagination paginator={products} />
             </div>
         </AuthenticatedLayout>
     );

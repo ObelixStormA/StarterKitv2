@@ -118,7 +118,15 @@ final class FieldDefinition
             $rules[] = 'in:' . implode(',', $this->options);
         }
 
-        return $rules;
+        // Ba'zi qoidalar yuqorida "string|max:255" kabi pipe bilan
+        // qo'shilgan — bu faqat satr formatida ('required|string|max:255')
+        // avtomatik ajratiladi, lekin massiv formatida HAR BIR element
+        // alohida qoida nomi sifatida talqin qilinadi va Laravel uni
+        // bitta qoida deb (masalan "String|max") tushunib xato beradi.
+        // Shu sabab bu yerda pipe bo'yicha alohida elementlarga ajratamiz.
+        return collect($rules)
+            ->flatMap(fn (string $rule) => explode('|', $rule))
+            ->all();
     }
 
     public function tsType(): string

@@ -65,6 +65,7 @@ final class ModuleGenerator
 
         $this->registerServiceProvider();
         $this->registerPermissionModule();
+        $this->registerMenuItem();
         $this->appendTypeScriptInterface();
         $this->appendLocaleKeys();
 
@@ -524,18 +525,86 @@ final class ModuleGenerator
         $path = base_path('database/seeders/RolePermissionSeeder.php');
         $contents = File::get($path);
 
-        if (str_contains($contents, "'{$this->table}',")) {
+        if (! str_contains($contents, "'{$this->table}',")) {
+            $contents = preg_replace(
+                "/(protected array \\\$modules = \\[\\n)/",
+                "$1        '{$this->table}',\n",
+                $contents,
+                1
+            );
+
+            File::put($path, $contents);
+        }
+
+        // Ruxsatlarni darhol bazaga yozamiz — aks holda yangi modul admin
+        // roliga ega bo'lmagan holda sidebar'da ko'rinmay qoladi (frontend
+        // haqiqiy ruxsatlar ro'yxatiga qarab filtrlaydi, Gate::before admin
+        // bypass'i faqat backend marshrutlariga tegishli). `Artisan::call()`
+        // emas, seeder to'g'ridan-to'g'ri chaqiriladi — veb-so'rov ichida
+        // Artisan konsol yadrosini yuklash joriy request/session bog'lanishini
+        // buzib, "Session store not set on request" xatosiga olib kelardi.
+        app(\Database\Seeders\RolePermissionSeeder::class)->run();
+    }
+
+    /**
+     * Yangi modulni admin panel sidebar'iga ("Administrator" guruhi ostiga)
+     * qo'shadi. Sidebar `menus` jadvalidagi "admin" menyudan dinamik
+     * quriladi (bootstrap/app.php'dagi HandleInertiaRequests orqali), shu
+     * sababli bu yerda faylga emas, to'g'ridan-to'g'ri bazaga yoziladi.
+     * "menus" moduli sozlanmagan (Menu modeli topilmagan) muhitlarda
+     * jimgina o'tkazib yuboriladi.
+     */
+    private function registerMenuItem(): void
+    {
+        if (! class_exists(\App\Modules\Menu\Models\Menu::class)) {
             return;
         }
 
-        $contents = preg_replace(
-            "/(protected array \\\$modules = \\[\\n)/",
-            "$1        '{$this->table}',\n",
-            $contents,
-            1
-        );
+        $menu = \App\Modules\Menu\Models\Menu::where('key', 'admin')->first();
 
-        File::put($path, $contents);
+        if (! $menu) {
+            return;
+        }
+
+        $alreadyExists = \App\Modules\Menu\Models\MenuItem::where('menu_id', $menu->id)
+            ->where('url', "/admin/{$this->table}")
+            ->exists();
+
+        if ($alreadyExists) {
+            return;
+        }
+
+        $group = \App\Modules\Menu\Models\MenuItem::where('menu_id', $menu->id)
+            ->whereNull('parent_id')
+            ->where('label', 'nav.administrator')
+            ->first();
+
+        if (! $group) {
+            $maxRootOrder = \App\Modules\Menu\Models\MenuItem::where('menu_id', $menu->id)
+                ->whereNull('parent_id')
+                ->max('order');
+
+            $group = \App\Modules\Menu\Models\MenuItem::create([
+                'menu_id' => $menu->id,
+                'parent_id' => null,
+                'label' => 'nav.administrator',
+                'target' => '_self',
+                'order' => $maxRootOrder === null ? 0 : $maxRootOrder + 1,
+            ]);
+        }
+
+        $maxChildOrder = \App\Modules\Menu\Models\MenuItem::where('parent_id', $group->id)->max('order');
+
+        \App\Modules\Menu\Models\MenuItem::create([
+            'menu_id' => $menu->id,
+            'parent_id' => $group->id,
+            'label' => "{$this->table}.title",
+            'icon' => 'FileIcon',
+            'url' => "/admin/{$this->table}",
+            'target' => '_self',
+            'permission' => "{$this->table}.view,{$this->table}.ownview",
+            'order' => $maxChildOrder === null ? 0 : $maxChildOrder + 1,
+        ]);
     }
 
     // ------------------------------------------------------------------
@@ -639,11 +708,11 @@ final class ModuleGenerator
         }
 
         $headers = $indexFields
-            ->map(fn (FieldDefinition $f) => "                                <th className=\"py-3 pr-4 font-semibold\">{t('{$this->table}.field.{$f->columnName()}')}</th>")
+            ->map(fn (FieldDefinition $f) => $this->reindent("<Th>{t('{$this->table}.field.{$f->columnName()}')}</Th>", 28))
             ->implode("\n");
 
         $cells = $indexFields
-            ->map(fn (FieldDefinition $f) => "                                    <td className=\"py-3 pr-4 text-secondary-900\">{$f->indexCellExpression('item')}</td>")
+            ->map(fn (FieldDefinition $f) => $this->reindent("<Td>{$f->indexCellExpression('item')}</Td>", 36))
             ->implode("\n");
 
         $trashLink = $this->softDeletes ? "\n" . $this->reindent(<<<JSX
@@ -655,6 +724,8 @@ final class ModuleGenerator
             JSX, 20) : '';
 
         $content = <<<TSX
+        import { EditIcon, FileIcon, TrashIcon } from '@/Components/Icons';
+        import { EmptyState, TableActionButton, TableActions, TableBody, TableCard, TableHead, Td, Th, Tr } from '@/Components/DataTable';
         import Pagination from '@/Components/Pagination';
         import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
         import { usePermission } from '@/hooks/usePermission';
@@ -684,8 +755,8 @@ final class ModuleGenerator
                 <AuthenticatedLayout header={<h2 className="heading-2 text-secondary-900">{t('{$this->table}.title')}</h2>}>
                     <Head title={t('{$this->table}.title')} />
 
-                    <div className="card p-6">
-                        <div className="flex items-center justify-end gap-4 mb-6">{$trashLink}
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-end gap-4">{$trashLink}
                             {can('{$this->table}.create') && (
                                 <Link
                                     href={route('{$this->table}.create')}
@@ -696,41 +767,35 @@ final class ModuleGenerator
                             )}
                         </div>
 
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="text-left text-secondary-500 border-b border-surface-200">
+                        {{$prop}.data.length === 0 ? (
+                            <div className="card rounded-xl">
+                                <EmptyState icon={FileIcon} title={t('common.not_found')} />
+                            </div>
+                        ) : (
+                            <TableCard>
+                                <TableHead>
         {$headers}
-                                        <th className="py-3 pr-4 font-semibold text-right">{t('common.actions')}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                <Th align="right">{t('common.actions')}</Th>
+                                </TableHead>
+                                <TableBody>
                                     {{$prop}.data.map((item) => (
-                                        <tr key={item.id} className="border-b border-surface-100 last:border-0">
+                                        <Tr key={item.id}>
         {$cells}
-                                            <td className="py-3 pr-4 text-right space-x-2 whitespace-nowrap">
-                                                {can('{$this->table}.edit') && (
-                                                    <Link
-                                                        href={route('{$this->table}.edit', item.id)}
-                                                        className="text-theme-primary hover:underline text-sm font-medium"
-                                                    >
-                                                        {t('common.edit')}
-                                                    </Link>
-                                                )}
-                                                {can('{$this->table}.delete') && (
-                                                    <button
-                                                        onClick={() => destroy(item)}
-                                                        className="text-red-600 hover:underline text-sm font-medium"
-                                                    >
-                                                        {t('common.delete')}
-                                                    </button>
-                                                )}
-                                            </td>
-                                        </tr>
+                                            <Td align="right">
+                                                <TableActions>
+                                                    {can('{$this->table}.edit') && (
+                                                        <TableActionButton icon={EditIcon} href={route('{$this->table}.edit', item.id)} title={t('common.edit')} />
+                                                    )}
+                                                    {can('{$this->table}.delete') && (
+                                                        <TableActionButton icon={TrashIcon} onClick={() => destroy(item)} title={t('common.delete')} variant="danger" />
+                                                    )}
+                                                </TableActions>
+                                            </Td>
+                                        </Tr>
                                     ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                </TableBody>
+                            </TableCard>
+                        )}
 
                         <Pagination paginator={{$prop}} />
                     </div>
@@ -841,10 +906,16 @@ final class ModuleGenerator
 
     private function writeReactTrashed(): string
     {
-        $prop = 'trashed' . Str::plural($this->model);
+        // Controller'ning `trashed()` metodi ham xuddi index() kabi
+        // `$this->indexPropName()` nomidagi prop yuboradi — shu bilan mos
+        // kelishi kerak, aks holda frontend `undefined`ni destructure qilib
+        // "Cannot read properties of undefined" bilan qulab tushadi.
+        $prop = $this->indexPropName();
         $nameField = $this->fields[0]->columnName();
 
         $content = <<<TSX
+        import { FileIcon, RestoreIcon, TrashIcon } from '@/Components/Icons';
+        import { EmptyState, TableActionButton, TableActions, TableBody, TableCard, TableHead, Td, Th, Tr } from '@/Components/DataTable';
         import Pagination from '@/Components/Pagination';
         import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
         import { useLocale } from '@/i18n/LocaleProvider';
@@ -874,38 +945,34 @@ final class ModuleGenerator
                 <AuthenticatedLayout header={<h2 className="heading-2 text-secondary-900">{t('common.trash')} — {t('{$this->table}.title')}</h2>}>
                     <Head title={t('common.trash')} />
 
-                    <div className="card p-6">
+                    <div className="space-y-4">
                         {{$prop}.data.length === 0 ? (
-                            <p className="text-secondary-500 text-sm">{t('common.trash_empty')}</p>
-                        ) : (
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="text-left text-secondary-500 border-b border-surface-200">
-                                            <th className="py-3 pr-4 font-semibold">{t('{$this->table}.field.{$nameField}')}</th>
-                                            <th className="py-3 pr-4 font-semibold text-right">{t('common.actions')}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{$prop}.data.map((item) => (
-                                            <tr key={item.id} className="border-b border-surface-100 last:border-0">
-                                                <td className="py-3 pr-4 text-secondary-900">{item.{$nameField}}</td>
-                                                <td className="py-3 pr-4 text-right space-x-2 whitespace-nowrap">
-                                                    <button onClick={() => restore(item)} className="text-theme-primary hover:underline text-sm font-medium">
-                                                        {t('common.restore')}
-                                                    </button>
-                                                    <button onClick={() => forceDelete(item)} className="text-red-600 hover:underline text-sm font-medium">
-                                                        {t('common.delete_forever')}
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-
-                                <Pagination paginator={{$prop}} />
+                            <div className="card rounded-xl">
+                                <EmptyState icon={FileIcon} title={t('common.trash_empty')} />
                             </div>
+                        ) : (
+                            <TableCard>
+                                <TableHead>
+                                    <Th>{t('{$this->table}.field.{$nameField}')}</Th>
+                                    <Th align="right">{t('common.actions')}</Th>
+                                </TableHead>
+                                <TableBody>
+                                    {{$prop}.data.map((item) => (
+                                        <Tr key={item.id}>
+                                            <Td>{item.{$nameField}}</Td>
+                                            <Td align="right">
+                                                <TableActions>
+                                                    <TableActionButton icon={RestoreIcon} onClick={() => restore(item)} title={t('common.restore')} />
+                                                    <TableActionButton icon={TrashIcon} onClick={() => forceDelete(item)} title={t('common.delete_forever')} variant="danger" />
+                                                </TableActions>
+                                            </Td>
+                                        </Tr>
+                                    ))}
+                                </TableBody>
+                            </TableCard>
                         )}
+
+                        <Pagination paginator={{$prop}} />
                     </div>
                 </AuthenticatedLayout>
             );

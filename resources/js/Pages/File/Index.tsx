@@ -5,6 +5,7 @@ import {
     FileIcon,
     ImageIcon,
     MusicIcon,
+    TrashIcon,
     UploadIcon,
     VideoIcon,
 } from '@/Components/Icons';
@@ -253,7 +254,7 @@ export default function Index({
                                                     className="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center text-red-500 hover:text-red-700"
                                                     title={t('common.delete')}
                                                 >
-                                                    ×
+                                                    <TrashIcon className="w-3.5 h-3.5" />
                                                 </button>
                                             )}
                                         </div>

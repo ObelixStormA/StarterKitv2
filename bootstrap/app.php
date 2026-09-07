@@ -41,6 +41,17 @@ return Application::configure(basePath: dirname(__DIR__))
                 && in_array($status, [403, 404, 419, 429, 500, 503], true)
                 && (app()->environment('production') || $exception instanceof HttpExceptionInterface)
             ) {
+                // Yo'nalish umuman topilmagan (404) so'rovlar 'web' guruhi
+                // middleware'laridan (jumladan StartSession'dan) o'tmaydi,
+                // chunki mos route topilmagani uchun ular hech qachon
+                // ishga tushmaydi. Shu sabab bu yerda sessiya qo'lda
+                // biriktiriladi — aks holda HandleInertiaRequests::share()
+                // (auth/flash uchun sessiyaga murojaat qiladi) "Session
+                // store not set on request" xatosi bilan qulab tushadi.
+                if (! $request->hasSession()) {
+                    $request->setLaravelSession(app('session')->driver());
+                }
+
                 \Inertia\Inertia::share(
                     app(\App\Http\Middleware\HandleInertiaRequests::class)->share($request)
                 );
