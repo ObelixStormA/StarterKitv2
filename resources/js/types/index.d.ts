@@ -68,6 +68,27 @@ export interface User {
     roles?: Role[];
 }
 
+export interface Menu {
+    id: number;
+    key: string;
+    name: string;
+    items_count?: number;
+}
+
+export type MenuItemTarget = '_self' | '_blank';
+
+export interface MenuTreeNode {
+    id: number;
+    label: string;
+    icon: string | null;
+    url: string | null;
+    target: MenuItemTarget;
+    permission: string | null;
+    requires_local: boolean;
+    order: number;
+    children: MenuTreeNode[];
+}
+
 export interface PaginationLink {
     url: string | null;
     label: string;
@@ -98,4 +119,5 @@ export type PageProps<
     };
     site: SiteBranding;
     isLocal?: boolean;
+    adminMenu?: MenuTreeNode[];
 };

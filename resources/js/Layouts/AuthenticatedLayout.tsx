@@ -1,131 +1,65 @@
-import {
-    AuditIcon,
-    DashboardIcon,
-    FolderIcon,
-    LogoutIcon,
-    MenuIcon,
-    SettingsIcon,
-    ShieldIcon,
-    UserIcon,
-    UsersIcon,
-    WandIcon,
-} from '@/Components/Icons';
+import { LogoutIcon, MenuIcon, SettingsIcon } from '@/Components/Icons';
 import GlobalSearch from '@/Components/GlobalSearch';
 import LanguageSwitcher from '@/Components/LanguageSwitcher';
 import Logo from '@/Components/Logo';
 import NotificationBell from '@/Components/NotificationBell';
 import { useFlashToasts } from '@/hooks/useFlashToasts';
 import { usePermission } from '@/hooks/usePermission';
-import { useLocale } from '@/i18n/LocaleProvider';
+import { MessageKey, useLocale } from '@/i18n/LocaleProvider';
+import { ICON_MAP } from '@/lib/iconMap';
+import { MenuTreeNode } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ComponentType, PropsWithChildren, ReactNode, SVGProps, useState } from 'react';
+import { PropsWithChildren, ReactNode, useMemo, useState } from 'react';
 
-type NavItem = {
-    label: string;
-    href: string;
-    icon: ComponentType<SVGProps<SVGSVGElement>>;
-    active: boolean;
-};
-
-type NavGroup = {
-    title: string;
-    items: NavItem[];
-};
+/**
+ * `adminMenu`ni joriy foydalanuvchining ruxsatlariga qarab filtrlaydi.
+ * Bola elementlari qolmagan va o'zi havolaga ega bo'lmagan guruh
+ * sarlavhalari (masalan bo'shab qolgan "Administrator") ko'rsatilmaydi.
+ */
+function filterMenu(
+    nodes: MenuTreeNode[],
+    canAny: (permissions: string[]) => boolean,
+    isLocal: boolean,
+): MenuTreeNode[] {
+    return nodes
+        .filter((node) => {
+            if (node.requires_local && !isLocal) return false;
+            if (node.permission) {
+                const permissions = node.permission.split(',').map((p) => p.trim()).filter(Boolean);
+                if (permissions.length > 0 && !canAny(permissions)) return false;
+            }
+            return true;
+        })
+        .map((node) => ({ ...node, children: filterMenu(node.children, canAny, isLocal) }))
+        .filter((node) => node.url || node.children.length > 0);
+}
 
 export default function AuthenticatedLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const { auth, site, isLocal } = usePage().props as unknown as {
+    const page = usePage();
+    const { auth, site, isLocal, adminMenu } = page.props as unknown as {
         auth: { user: { name: string; email: string; avatar_url?: string | null }; roles: string[] };
         site: { name: string; logo: string; favicon: string };
         isLocal?: boolean;
+        adminMenu?: MenuTreeNode[];
     };
     const user = auth.user;
-    const { can, canAny } = usePermission();
+    const { canAny } = usePermission();
     const { t } = useLocale();
     useFlashToasts();
 
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-    const navGroups: NavGroup[] = [
-        {
-            title: t('nav.dashboard'),
-            items: [
-                {
-                    label: t('nav.dashboard'),
-                    href: route('dashboard'),
-                    icon: DashboardIcon,
-                    active: route().current('dashboard'),
-                },
-            ],
-        },
-        {
-            title: t('nav.administrator'),
-            items: [
-                ...(canAny(['users.view', 'users.ownview'])
-                    ? [{
-                          label: t('nav.users'),
-                          href: route('users.index'),
-                          icon: UsersIcon,
-                          active: route().current('users.*'),
-                      }]
-                    : []),
-                ...(can('roles.view')
-                    ? [{
-                          label: t('nav.roles'),
-                          href: route('roles.index'),
-                          icon: ShieldIcon,
-                          active: route().current('roles.*'),
-                      }]
-                    : []),
-                ...(canAny(['files.view', 'files.ownview'])
-                    ? [{
-                          label: t('nav.files'),
-                          href: route('files.index'),
-                          icon: FolderIcon,
-                          active: route().current('files.*'),
-                      }]
-                    : []),
-                ...(canAny(['settings.view', 'settings.ownview'])
-                    ? [{
-                          label: t('nav.settings'),
-                          href: route('settings.index'),
-                          icon: SettingsIcon,
-                          active: route().current('settings.*'),
-                      }]
-                    : []),
-                ...(can('audit.view')
-                    ? [{
-                          label: t('nav.audit'),
-                          href: route('audit.index'),
-                          icon: AuditIcon,
-                          active: route().current('audit.*'),
-                      }]
-                    : []),
-                ...(isLocal && can('settings.edit')
-                    ? [{
-                          label: t('nav.module_builder'),
-                          href: route('module-builder.index'),
-                          icon: WandIcon,
-                          active: route().current('module-builder.*'),
-                      }]
-                    : []),
-            ],
-        },
-        {
-            title: t('nav.account'),
-            items: [
-                {
-                    label: t('nav.profile'),
-                    href: route('profile.edit'),
-                    icon: UserIcon,
-                    active: route().current('profile.edit'),
-                },
-            ],
-        },
-    ].filter((group) => group.items.length > 0);
+    const menuGroups = useMemo(
+        () => filterMenu(adminMenu ?? [], canAny, !!isLocal),
+        [adminMenu, canAny, isLocal],
+    );
+
+    const currentPath = page.url.split('?')[0];
+    const isActiveUrl = (url: string) => currentPath === url || currentPath.startsWith(`${url}/`);
 
     const initials = user.name
         .split(' ')
@@ -156,27 +90,33 @@ export default function AuthenticatedLayout({
                 </div>
 
                 <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4">
-                    {navGroups.map((group) => (
-                        <div key={group.title} className="px-3 mb-4">
+                    {menuGroups.map((group) => (
+                        <div key={group.id} className="px-3 mb-4">
                             <p className="px-4 mb-2 text-xs font-semibold uppercase tracking-wider text-secondary-500">
-                                {group.title}
+                                {t(group.label as MessageKey)}
                             </p>
                             <div className="space-y-1">
-                                {group.items.map((item) => (
-                                    <Link
-                                        key={item.href}
-                                        href={item.href}
-                                        onClick={() => setIsMobileSidebarOpen(false)}
-                                        className={`group flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                                            item.active
-                                                ? 'bg-theme-primary text-white'
-                                                : 'text-secondary-500 hover:bg-surface-100'
-                                        }`}
-                                    >
-                                        <item.icon className="w-5 h-5 flex-shrink-0" />
-                                        <span className="flex-1">{item.label}</span>
-                                    </Link>
-                                ))}
+                                {group.children.map((item) => {
+                                    const Icon = item.icon ? ICON_MAP[item.icon] : null;
+                                    const active = item.url ? isActiveUrl(item.url) : false;
+
+                                    return (
+                                        <Link
+                                            key={item.id}
+                                            href={item.url ?? '#'}
+                                            target={item.target === '_blank' ? '_blank' : undefined}
+                                            onClick={() => setIsMobileSidebarOpen(false)}
+                                            className={`group flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                                                active
+                                                    ? 'bg-theme-primary text-white'
+                                                    : 'text-secondary-500 hover:bg-surface-100'
+                                            }`}
+                                        >
+                                            {Icon && <Icon className="w-5 h-5 flex-shrink-0" />}
+                                            <span className="flex-1">{t(item.label as MessageKey)}</span>
+                                        </Link>
+                                    );
+                                })}
                             </div>
                         </div>
                     ))}

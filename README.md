@@ -41,7 +41,8 @@
     <td width="50%"><img src="docs/screenshots/account-settings.png" alt="Account settings page with profile, security and devices tabs"></td>
   </tr>
   <tr>
-    <td width="50%" colspan="2"><img src="docs/screenshots/module-builder.png" alt="Visual drag-and-drop CRUD module builder"></td>
+    <td width="50%"><img src="docs/screenshots/module-builder.png" alt="Visual drag-and-drop CRUD module builder"></td>
+    <td width="50%"><img src="docs/screenshots/admin-menu.png" alt="Drag-and-drop menu builder driving the admin sidebar"></td>
   </tr>
 </table>
 
@@ -69,6 +70,8 @@
 - 🔔 **In-app notifications** — real database-backed notifications with a live bell dropdown, queued for delivery
 - 🔍 **Global search** — instant cross-module search (users, roles, settings, files) from the header
 - 👤 **Account settings** — profile, avatar upload, password change, account deletion
+- 🧭 **Menu Builder** — the admin sidebar itself is data-driven: build unlimited-depth menu trees with drag-and-drop (reorder or re-parent), per-item permissions, icons and open-in-new-tab, at `/admin/menus`
+- 🧩 **Icon catalog** — a searchable `/admin/icons` page listing every icon in the project; click one to copy its name for use in the Menu Builder
 
 **Developer experience**
 - 🌍 **3 languages** — Uzbek, Russian, English, both on the frontend **and** in backend validation messages (auto-synced with the UI language)
@@ -219,6 +222,8 @@ Released under the [MIT license](https://opensource.org/licenses/MIT).
 - 🔔 **Ilova ichidagi bildirishnomalar** — haqiqiy bazaga asoslangan, navbat orqali yuboriladigan, header'da jonli ko'ringan bildirishnomalar
 - 🔍 **Global qidiruv** — header orqali barcha modullar (foydalanuvchi, rol, sozlama, fayl) bo'yicha bir zumda qidirish
 - 👤 **Hisob sozlamalari** — profil, avatar yuklash, parol o'zgartirish, hisobni o'chirish
+- 🧭 **Menu Builder** — admin panel sidebar'ining o'zi ma'lumotlar bazasidan boshqariladi: `/admin/menus` orqali cheksiz chuqurlikdagi menu daraxtini sudrab-tashlab (tartib yoki ota-elementini o'zgartirib) tuzing, har bir elementga ruxsat, iconka va yangi oynada ochilishni belgilang
+- 🧩 **Iconkalar katalogi** — `/admin/icons` sahifasida loyihadagi barcha iconkalar qidiruv bilan ro'yxatlangan; bosilganda nomi buferga nusxalanadi (Menu Builder'da ishlatish uchun)
 
 **Dasturchi uchun qulayliklar**
 - 🌍 **3 tillilik** — O'zbekcha, Русский, English — nafaqat frontend, balki **backend validatsiya xabarlari** ham (interfeys tili bilan avtomatik sinxron)
@@ -369,6 +374,8 @@ Ilovani (PHP-FPM), nginx proksini, PostgreSQL'ni va alohida navbat (queue) worke
 - 🔔 **Уведомления внутри приложения** — настоящие уведомления на основе БД с живым колокольчиком в шапке, доставляются через очередь
 - 🔍 **Глобальный поиск** — мгновенный поиск по всем модулям (пользователи, роли, настройки, файлы) из шапки сайта
 - 👤 **Настройки аккаунта** — профиль, загрузка аватара, смена пароля, удаление аккаунта
+- 🧭 **Menu Builder** — сама боковая панель админки управляется данными: стройте дерево меню неограниченной глубины перетаскиванием (изменение порядка или родителя) на `/admin/menus`, с правами, иконками и открытием в новой вкладке для каждого пункта
+- 🧩 **Каталог иконок** — страница `/admin/icons` с поиском показывает все иконки проекта; клик копирует название в буфер (для использования в Menu Builder)
 
 **Для разработчиков**
 - 🌍 **3 языка** — узбекский, русский, английский — не только интерфейс, но и **сообщения валидации бэкенда** (автоматически синхронизируются с языком интерфейса)

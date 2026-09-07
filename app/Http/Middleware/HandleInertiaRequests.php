@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Modules\Menu\Services\MenuService;
 use App\Modules\Setting\Services\SettingService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -9,7 +10,8 @@ use Inertia\Middleware;
 class HandleInertiaRequests extends Middleware
 {
     public function __construct(
-        private readonly SettingService $settings
+        private readonly SettingService $settings,
+        private readonly MenuService $menus,
     ) {}
 
     /**
@@ -56,6 +58,7 @@ class HandleInertiaRequests extends Middleware
                 'favicon' => fn () => $this->settings->get('admin', 'site_favicon', '/assets/logo/favicon.ico'),
             ],
             'isLocal' => app()->environment('local'),
+            'adminMenu' => fn () => $user ? $this->menus->treeByKey('admin') : [],
         ];
     }
 }
