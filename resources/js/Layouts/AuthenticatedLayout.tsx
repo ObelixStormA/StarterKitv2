@@ -3,6 +3,7 @@ import GlobalSearch from '@/Components/GlobalSearch';
 import LanguageSwitcher from '@/Components/LanguageSwitcher';
 import Logo from '@/Components/Logo';
 import NotificationBell from '@/Components/NotificationBell';
+import ThemeSettingsPanel from '@/Components/ThemeSettingsPanel';
 import { useFlashToasts } from '@/hooks/useFlashToasts';
 import { usePermission } from '@/hooks/usePermission';
 import { MessageKey, useLocale } from '@/i18n/LocaleProvider';
@@ -79,7 +80,7 @@ export default function AuthenticatedLayout({
 
             {/* Sidebar */}
             <aside
-                className={`fixed top-0 bottom-0 left-0 w-[260px] bg-white border-e border-surface-200 flex flex-col z-[1030] transition-transform duration-300 ${
+                className={`fixed top-0 bottom-0 left-0 w-[var(--sidebar-width)] bg-white dark:bg-surface-100 border-e border-surface-200 flex flex-col z-[1030] transition-transform duration-300 ${
                     isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
                 }`}
             >
@@ -92,7 +93,7 @@ export default function AuthenticatedLayout({
                 <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4">
                     {menuGroups.map((group) => (
                         <div key={group.id} className="px-3 mb-4">
-                            <p className="px-4 mb-2 text-xs font-semibold uppercase tracking-wider text-secondary-500">
+                            <p className="sidebar-label px-4 mb-2 text-xs font-semibold uppercase tracking-wider text-secondary-500">
                                 {t(group.label as MessageKey)}
                             </p>
                             <div className="space-y-1">
@@ -106,14 +107,14 @@ export default function AuthenticatedLayout({
                                             href={item.url ?? '#'}
                                             target={item.target === '_blank' ? '_blank' : undefined}
                                             onClick={() => setIsMobileSidebarOpen(false)}
-                                            className={`group flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                                            className={`sidebar-nav-item group flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                                                 active
                                                     ? 'bg-theme-primary text-white'
                                                     : 'text-secondary-500 hover:bg-surface-100'
                                             }`}
                                         >
                                             {Icon && <Icon className="w-5 h-5 flex-shrink-0" />}
-                                            <span className="flex-1">{t(item.label as MessageKey)}</span>
+                                            <span className="sidebar-label flex-1">{t(item.label as MessageKey)}</span>
                                         </Link>
                                     );
                                 })}
@@ -127,16 +128,16 @@ export default function AuthenticatedLayout({
                         href={route('logout')}
                         method="post"
                         as="button"
-                        className="w-full flex items-center gap-3 rounded-xl text-sm font-medium text-secondary-500 hover:bg-surface-100 transition-colors px-4 py-2.5"
+                        className="sidebar-nav-item w-full flex items-center gap-3 rounded-xl text-sm font-medium text-secondary-500 hover:bg-surface-100 transition-colors px-4 py-2.5"
                     >
                         <LogoutIcon className="w-5 h-5 flex-shrink-0" />
-                        <span>{t('nav.logout')}</span>
+                        <span className="sidebar-label">{t('nav.logout')}</span>
                     </Link>
                 </div>
             </aside>
 
             {/* Header */}
-            <header className="fixed top-0 left-0 right-0 lg:left-[260px] h-16 bg-white/95 backdrop-blur border-b border-surface-200 z-[1020] transition-all duration-300">
+            <header className="fixed top-0 left-0 right-0 lg:left-[var(--sidebar-width)] h-16 bg-white/95 dark:bg-surface-100 backdrop-blur border-b border-surface-200 z-[1020] transition-all duration-300">
                 <div className="w-full px-4 h-full flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <button
@@ -186,7 +187,7 @@ export default function AuthenticatedLayout({
                             )}
 
                             {userMenuOpen && (
-                                <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-surface-200 bg-white shadow-xl p-2 z-[1035]">
+                                <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-surface-200 bg-white dark:bg-surface-100 shadow-xl p-2 z-[1035]">
                                     <Link
                                         href={route('profile.edit')}
                                         className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-secondary-500 hover:bg-surface-50"
@@ -214,14 +215,16 @@ export default function AuthenticatedLayout({
             </header>
 
             {/* Main Content */}
-            <main className="pt-16 lg:pl-[260px] transition-all duration-300">
+            <main className="pt-16 lg:pl-[var(--sidebar-width)] transition-all duration-300">
                 {header && (
-                    <div className="bg-white border-b border-surface-200">
-                        <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">{header}</div>
+                    <div className="bg-white dark:bg-surface-100 border-b border-surface-200">
+                        <div className="container-boxed px-4 md:px-6 py-6">{header}</div>
                     </div>
                 )}
-                <div className="p-4 md:p-6">{children}</div>
+                <div className="container-boxed p-4 md:p-6">{children}</div>
             </main>
+
+            <ThemeSettingsPanel />
         </div>
     );
 }

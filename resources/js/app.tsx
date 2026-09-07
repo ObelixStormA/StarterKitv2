@@ -1,5 +1,6 @@
 import '../css/app.css';
 
+import { ThemeSettingsProvider } from '@/Contexts/ThemeSettingsContext';
 import { LocaleProvider } from '@/i18n/LocaleProvider';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -18,9 +19,11 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <LocaleProvider>
-                <App {...props} />
-            </LocaleProvider>,
+            <ThemeSettingsProvider>
+                <LocaleProvider>
+                    <App {...props} />
+                </LocaleProvider>
+            </ThemeSettingsProvider>,
         );
     },
     progress: {
