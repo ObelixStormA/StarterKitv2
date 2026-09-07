@@ -274,6 +274,8 @@ export default {
     'menus.no_items': "Hali elementlar yo'q. Pastdagi forma orqali qo'shing.",
     'menus.add_item': "Element qo'shish",
     'menus.no_icon': "Iconkasiz",
+    'menus.system.admin_name': 'Admin panel menyusi',
+    'menus.system.site_name': 'Sayt menyusi',
     'menus.icon_placeholder': 'Iconka nomi (masalan: UserIcon)',
     'menus.view_icons': 'Iconkalar ro\'yxati →',
 

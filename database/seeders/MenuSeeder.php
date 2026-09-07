@@ -21,8 +21,10 @@ class MenuSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = Menu::firstOrCreate(['key' => 'admin'], ['name' => 'Admin panel menyusi']);
-        Menu::firstOrCreate(['key' => 'site'], ['name' => 'Sayt menyusi']);
+        // `name`ga i18n kaliti saqlanadi — frontend `t(menu.name)` orqali
+        // joriy tilga tarjima qilib ko'rsatadi (item label'lari kabi).
+        $admin = Menu::updateOrCreate(['key' => 'admin'], ['name' => 'menus.system.admin_name']);
+        Menu::updateOrCreate(['key' => 'site'], ['name' => 'menus.system.site_name']);
 
         // Qayta ishga tushirilganda eskilarini tozalab, yangidan yaratamiz —
         // shunda seeder har doim "hozirgi holat"ni aks ettiradi.

@@ -1,7 +1,7 @@
 import { GripIcon } from '@/Components/Icons';
 import InputError from '@/Components/InputError';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useLocale } from '@/i18n/LocaleProvider';
+import { MessageKey, useLocale } from '@/i18n/LocaleProvider';
 import { ICON_MAP } from '@/lib/iconMap';
 import { Menu, MenuItemTarget, MenuTreeNode } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
@@ -144,11 +144,11 @@ export default function Builder({ menu, tree: initialTree }: { menu: Menu; tree:
                     <Link href={route('menus.index')} className="text-sm text-theme-primary hover:underline font-medium">
                         ← {t('menus.title')}
                     </Link>
-                    <h2 className="heading-2 text-secondary-900">{menu.name}</h2>
+                    <h2 className="heading-2 text-secondary-900">{t(menu.name as MessageKey)}</h2>
                 </div>
             }
         >
-            <Head title={`${t('menus.builder_title')} — ${menu.name}`} />
+            <Head title={`${t('menus.builder_title')} — ${t(menu.name as MessageKey)}`} />
 
             <div className="max-w-4xl mx-auto space-y-4">
                 <div className="flex items-center justify-between gap-4">

@@ -276,6 +276,8 @@ const en: typeof Uz = {
     'menus.no_items': 'No items yet. Add one using the form below.',
     'menus.add_item': 'Add item',
     'menus.no_icon': 'No icon',
+    'menus.system.admin_name': 'Admin panel menu',
+    'menus.system.site_name': 'Site menu',
     'menus.icon_placeholder': 'Icon name (e.g. UserIcon)',
     'menus.view_icons': 'View icon list →',
 

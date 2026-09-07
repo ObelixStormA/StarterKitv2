@@ -276,6 +276,8 @@ const ru: typeof Uz = {
     'menus.no_items': 'Пока нет элементов. Добавьте через форму ниже.',
     'menus.add_item': 'Добавить элемент',
     'menus.no_icon': 'Без иконки',
+    'menus.system.admin_name': 'Меню админ-панели',
+    'menus.system.site_name': 'Меню сайта',
     'menus.icon_placeholder': 'Название иконки (напр. UserIcon)',
     'menus.view_icons': 'Список иконок →',
 

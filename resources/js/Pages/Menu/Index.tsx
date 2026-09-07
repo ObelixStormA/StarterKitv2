@@ -2,7 +2,7 @@ import InputError from '@/Components/InputError';
 import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { usePermission } from '@/hooks/usePermission';
-import { useLocale } from '@/i18n/LocaleProvider';
+import { MessageKey, useLocale } from '@/i18n/LocaleProvider';
 import { confirmDelete } from '@/lib/swal';
 import { Menu, Paginated } from '@/types';
 import { Head, Link, router, useForm } from '@inertiajs/react';
@@ -100,7 +100,7 @@ function MenuRow({ menu }: { menu: Menu }) {
     const destroy = async () => {
         const confirmed = await confirmDelete({
             title: t('common.are_you_sure'),
-            text: t('menus.delete_confirm', { name: menu.name }),
+            text: t('menus.delete_confirm', { name: t(menu.name as MessageKey) }),
             confirmText: t('common.confirm_delete_button'),
             cancelText: t('common.cancel'),
         });
@@ -150,7 +150,7 @@ function MenuRow({ menu }: { menu: Menu }) {
             <td className="py-3 pr-4">
                 <span className="font-mono text-xs text-secondary-500">{menu.key}</span>
             </td>
-            <td className="py-3 pr-4 text-secondary-900 font-medium">{menu.name}</td>
+            <td className="py-3 pr-4 text-secondary-900 font-medium">{t(menu.name as MessageKey)}</td>
             <td className="py-3 pr-4 text-secondary-500">{menu.items_count ?? 0}</td>
             <td className="py-3 pr-4 text-right space-x-2 whitespace-nowrap">
                 {can('menus.edit') && (

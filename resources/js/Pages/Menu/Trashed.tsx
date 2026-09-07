@@ -1,6 +1,6 @@
 import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useLocale } from '@/i18n/LocaleProvider';
+import { MessageKey, useLocale } from '@/i18n/LocaleProvider';
 import { confirmDelete } from '@/lib/swal';
 import { Menu, Paginated } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -15,7 +15,7 @@ export default function Trashed({ menus }: { menus: Paginated<Menu> }) {
     const forceDelete = async (menu: Menu) => {
         const confirmed = await confirmDelete({
             title: t('common.are_you_sure'),
-            text: t('common.force_delete_confirm', { name: menu.name }),
+            text: t('common.force_delete_confirm', { name: t(menu.name as MessageKey) }),
             confirmText: t('common.confirm_delete_button'),
             cancelText: t('common.cancel'),
         });
@@ -49,7 +49,7 @@ export default function Trashed({ menus }: { menus: Paginated<Menu> }) {
                             {menus.data.map((menu) => (
                                 <tr key={menu.id} className="border-b border-surface-100 last:border-0">
                                     <td className="py-3 pr-4 font-mono text-xs text-secondary-500">{menu.key}</td>
-                                    <td className="py-3 pr-4 text-secondary-900 font-medium">{menu.name}</td>
+                                    <td className="py-3 pr-4 text-secondary-900 font-medium">{t(menu.name as MessageKey)}</td>
                                     <td className="py-3 pr-4 text-right space-x-2 whitespace-nowrap">
                                         <button onClick={() => restore(menu)} className="text-theme-primary hover:underline text-sm font-medium">
                                             {t('common.restore')}
